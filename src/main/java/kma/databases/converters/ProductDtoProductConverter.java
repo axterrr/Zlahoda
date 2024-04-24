@@ -8,7 +8,7 @@ public class ProductDtoProductConverter {
     public static Product toProduct(ProductDto productDto) {
         return new Product.Builder()
                 .setId(productDto.getId())
-                .setCategoryNumber(productDto.getCategoryNumber())
+                .setCategory(productDto.getCategory())
                 .setName(productDto.getName())
                 .setCharacteristics(productDto.getCharacteristics())
                 .build();

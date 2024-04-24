@@ -11,8 +11,10 @@ import java.util.Optional;
 
 public class JdbcProductDao implements ProductDao {
 
-    private static String GET_ALL = "SELECT * FROM `product` ORDER BY id_product";
-    private static String GET_BY_ID = "SELECT * FROM `product` WHERE id_product=?";
+    private static String GET_ALL = "SELECT * FROM `product` INNER JOIN `category` " +
+            "ON product.category_number = category.category_number ORDER BY id_product";
+    private static String GET_BY_ID = "SELECT * FROM `product` INNER JOIN `category` " +
+            "ON product.category_number = category.category_number WHERE id_product=?";
     private static String CREATE = "INSERT INTO `product` (category_number, product_name, characteristics) VALUES (?, ?, ?)";
     private static String UPDATE = "UPDATE `product` SET category_number=?, product_name=?, characteristics=? WHERE id_product=?";
     private static String DELETE = "DELETE FROM `product` WHERE id_product=?";
@@ -66,7 +68,7 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void create(Product product) {
         try (PreparedStatement query = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
-            query.setLong(1, product.getCategoryNumber());
+            query.setLong(1, product.getCategory().getNumber());
             query.setString(2, product.getName());
             query.setString(3, product.getCharacteristics());
             query.executeUpdate();
@@ -82,7 +84,7 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void update(Product product) {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
-            query.setLong(1, product.getCategoryNumber());
+            query.setLong(1, product.getCategory().getNumber());
             query.setString(2, product.getName());
             query.setString(3, product.getCharacteristics());
             query.setLong(4, product.getId());
@@ -114,9 +116,12 @@ public class JdbcProductDao implements ProductDao {
     }
 
     protected static Product extractProductFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Product.Builder().setId(resultSet.getLong(ID)).setName(resultSet.getString(NAME))
+        return new Product.Builder()
+                .setId(resultSet.getLong(ID))
+                .setName(resultSet.getString(NAME))
                 .setCharacteristics(resultSet.getString(CHARACTERISTICS))
-                .setCategoryNumber(resultSet.getLong(CATEGORY_NUMBER)).build();
+                .setCategory(JdbcCategoryDao.extractCategoryFromResultSet(resultSet))
+                .build();
     }
 
 }

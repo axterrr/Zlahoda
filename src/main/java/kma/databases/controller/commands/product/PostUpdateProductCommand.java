@@ -45,7 +45,7 @@ public class PostUpdateProductCommand implements Command {
                 .setId(Long.parseLong(request.getParameter(Attribute.ID_PRODUCT)))
                 .setName(request.getParameter(Attribute.NAME))
                 .setCharacteristics(request.getParameter(Attribute.CHARACTERISTICS))
-                .setCategoryNumber(Long.parseLong(request.getParameter(Attribute.ID_CATEGORY)))
+                //.setCategoryNumber(Long.parseLong(request.getParameter(Attribute.ID_CATEGORY)))
                 .build();
     }
 

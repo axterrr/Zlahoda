@@ -1,11 +1,12 @@
 package kma.databases.dto;
 
+import kma.databases.entities.Category;
 import kma.databases.entities.IBuilder;
 
 public class ProductDto {
 
     private Long id;
-    private Long categoryNumber;
+    private Category category;
     private String name;
     private String characteristics;
 
@@ -18,8 +19,8 @@ public class ProductDto {
             return this;
         }
 
-        public Builder setCategoryNumber(Long categoryNumber) {
-            product.categoryNumber = categoryNumber;
+        public Builder setCategory(Category category) {
+            product.category = category;
             return this;
         }
 
@@ -47,12 +48,12 @@ public class ProductDto {
         this.id = id;
     }
 
-    public Long getCategoryNumber() {
-        return categoryNumber;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryNumber(Long categoryNumber) {
-        this.categoryNumber = categoryNumber;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getName() {

@@ -12,16 +12,16 @@ public class CheckDtoСheckConverter {
     public static Check toCheck(CheckDto checkDto) {
         Check.Builder builder = new Check.Builder()
                 .setNumber(checkDto.getNumber())
-                .setEmployeeId(checkDto.getEmployeeId())
-                .setCustomerCardNumber(checkDto.getCustomerCardNumber())
+                .setEmployee(checkDto.getEmployee())
+                .setCustomerCard(checkDto.getCustomerCard())
                 .setPrintDate(LocalDateTime.parse(checkDto.getPrintDate()))
                 .setTotalSum(new BigDecimal(checkDto.getTotalSum()))
                 .setVat(new BigDecimal(checkDto.getVat()));
         if(checkDto.getNumber() == null) {
             builder.setNumber(UUID.randomUUID().toString());
         }
-        if(checkDto.getCustomerCardNumber() == null || checkDto.getCustomerCardNumber().isEmpty()) {
-            builder.setCustomerCardNumber(null);
+        if(checkDto.getCustomerCard() == null || checkDto.getCustomerCard().getNumber() == null) {
+            builder.setCustomerCard(null);
         }
         return builder.build();
     }

@@ -72,8 +72,8 @@ public class JdbcStoreProductDao implements StoreProductDao {
     public void create(StoreProduct product) {
         try (PreparedStatement query = connection.prepareStatement(CREATE)) {
             query.setString(1, product.getUpc());
-            query.setString(2, product.getPromUPC());
-            query.setLong(3, product.getProductId());
+            //query.setString(2, product.getProm());
+            //query.setLong(3, product.getProductId());
             query.setBigDecimal(4, product.getPrice());
             query.setLong(5, product.getAmount());
             query.setBoolean(6, product.isPromotional());
@@ -86,8 +86,8 @@ public class JdbcStoreProductDao implements StoreProductDao {
     @Override
     public void update(StoreProduct product) {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
-            query.setString(1, product.getPromUPC());
-            query.setLong(2, product.getProductId());
+            //query.setString(1, product.getProm());
+            //query.setLong(2, product.getProductId());
             query.setBigDecimal(3, product.getPrice());
             query.setLong(4, product.getAmount());
             query.setBoolean(5, product.isPromotional());
@@ -122,7 +122,9 @@ public class JdbcStoreProductDao implements StoreProductDao {
     protected static StoreProduct extractStoreProductFromResultSet(ResultSet resultSet) throws SQLException {
         return new StoreProduct.Builder().setUPC(resultSet.getString(UPC)).setPrice(resultSet.getBigDecimal(PRICE))
                 .setAmount(resultSet.getLong(PRODUCTS_NUMBER)).setPromotional(resultSet.getBoolean(PROMOTIONAL_PRODUCT))
-                .setProductId(resultSet.getLong(PRODUCT_ID)).setPromUPC(resultSet.getString(PROM_UPC)).build();
+                //.setProduct(resultSet.getLong(PRODUCT_ID))
+                //.setProm(resultSet.getString(PROM_UPC))
+                .build();
     }
 
 }

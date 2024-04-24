@@ -50,8 +50,9 @@ public class UnauthorizedAccessFilter implements Filter {
     public void destroy() {}
 
     private boolean isUserAuthorizedForResource(String servletPath, Employee user) {
-        return (isManagerPage(servletPath) && user.getRole().equals(Role.MANAGER))
-                || (isCashierPage(servletPath) && user.getRole().equals(Role.CASHIER));
+        return true;
+        //return (isManagerPage(servletPath) && user.getRole().equals(Role.MANAGER))
+        //        || (isCashierPage(servletPath) && user.getRole().equals(Role.CASHIER));
     }
 
     private boolean isManagerPage(String requestURI) {

@@ -71,8 +71,8 @@ public class JdbcCheckDao implements CheckDao {
     public void create(Check check) {
         try (PreparedStatement query = connection.prepareStatement(CREATE)) {
             query.setString(1, check.getNumber());
-            query.setString(2, check.getEmployeeId());
-            query.setString(3, check.getCustomerCardNumber());
+            //query.setString(2, check.getEmployee());
+            //query.setString(3, check.getCustomerCard());
             query.setTimestamp(4, Timestamp.valueOf(check.getPrintDate()));
             query.setBigDecimal(5, check.getTotalSum());
             query.setBigDecimal(6, check.getVat());
@@ -85,8 +85,8 @@ public class JdbcCheckDao implements CheckDao {
     @Override
     public void update(Check check) {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
-            query.setString(1, check.getEmployeeId());
-            query.setString(2, check.getCustomerCardNumber());
+            //query.setString(1, check.getEmployee());
+            //query.setString(2, check.getCustomerCard());
             query.setTimestamp(3, Timestamp.valueOf(check.getPrintDate()));
             query.setBigDecimal(4, check.getTotalSum());
             query.setBigDecimal(5, check.getVat());
@@ -121,8 +121,9 @@ public class JdbcCheckDao implements CheckDao {
     protected static Check extractCheckFromResultSet(ResultSet resultSet) throws SQLException {
         return new Check.Builder().setNumber(resultSet.getString(NUMBER)).setTotalSum(resultSet.getBigDecimal(SUM_TOTAL))
                 .setVat(resultSet.getBigDecimal(VAT)).setPrintDate(resultSet.getTimestamp(PRINT_DATE).toLocalDateTime())
-                .setEmployeeId(resultSet.getString(EMPLOYEE_ID)).
-                setCustomerCardNumber(resultSet.getString(CUSTOMER_CARD_NUMBER)).build();
+                //.setEmployee(resultSet.getString(EMPLOYEE_ID))
+                //.setCustomerCard(resultSet.getString(CUSTOMER_CARD_NUMBER))
+                .build();
     }
 
 }

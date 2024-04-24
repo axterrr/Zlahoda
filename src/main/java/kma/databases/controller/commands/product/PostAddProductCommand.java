@@ -45,7 +45,7 @@ public class PostAddProductCommand implements Command {
         return new ProductDto.Builder()
                 .setName(request.getParameter(Attribute.NAME))
                 .setCharacteristics(request.getParameter(Attribute.CHARACTERISTICS))
-                .setCategoryNumber(Long.parseLong(request.getParameter(Attribute.CATEGORY)))
+                //.setCategoryNumber(Long.parseLong(request.getParameter(Attribute.CATEGORY)))
                 .build();
     }
 

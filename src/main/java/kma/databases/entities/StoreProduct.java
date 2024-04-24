@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class StoreProduct {
 
     private String upc;
-    private String promUPC;
-    private Long productId;
+    private StoreProduct prom;
+    private Product product;
     private BigDecimal price;
     private Long amount;
     private boolean promotional;
@@ -20,13 +20,13 @@ public class StoreProduct {
             return this;
         }
 
-        public Builder setPromUPC(String promUPC) {
-            storeProduct.promUPC = promUPC;
+        public Builder setProm(StoreProduct prom) {
+            storeProduct.prom = prom;
             return this;
         }
 
-        public Builder setProductId(Long productId) {
-            storeProduct.productId = productId;
+        public Builder setProduct(Product product) {
+            storeProduct.product = product;
             return this;
         }
 
@@ -59,20 +59,20 @@ public class StoreProduct {
         this.upc = upc;
     }
 
-    public String getPromUPC() {
-        return promUPC;
+    public StoreProduct getProm() {
+        return prom;
     }
 
-    public void setPromUPC(String promUPC) {
-        this.promUPC = promUPC;
+    public void setProm(StoreProduct prom) {
+        this.prom = prom;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public BigDecimal getPrice() {

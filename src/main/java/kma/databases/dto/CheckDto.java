@@ -1,12 +1,15 @@
 package kma.databases.dto;
 
+import kma.databases.entities.Check;
+import kma.databases.entities.CustomerCard;
+import kma.databases.entities.Employee;
 import kma.databases.entities.IBuilder;
 
 public class CheckDto {
 
     private String number;
-    private String employeeId;
-    private String customerCardNumber;
+    private Employee employee;
+    private CustomerCard customerCard;
     private String printDate;
     private String totalSum;
     private String vat;
@@ -20,13 +23,13 @@ public class CheckDto {
             return this;
         }
 
-        public Builder setEmployeeId(String employeeId) {
-            check.employeeId = employeeId;
+        public Builder setEmployee(Employee employee) {
+            check.employee = employee;
             return this;
         }
 
-        public Builder setCustomerCardNumber(String customerCardNumber) {
-            check.customerCardNumber = customerCardNumber;
+        public Builder setCustomerCard(CustomerCard customerCard) {
+            check.customerCard = customerCard;
             return this;
         }
 
@@ -59,20 +62,20 @@ public class CheckDto {
         this.number = number;
     }
 
-    public String getEmployeeId() {
-        return employeeId;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public String getCustomerCardNumber() {
-        return customerCardNumber;
+    public CustomerCard getCustomerCard() {
+        return customerCard;
     }
 
-    public void setCustomerCardNumber(String customerCardNumber) {
-        this.customerCardNumber = customerCardNumber;
+    public void setCustomerCard(CustomerCard customerCard) {
+        this.customerCard = customerCard;
     }
 
     public String getPrintDate() {
