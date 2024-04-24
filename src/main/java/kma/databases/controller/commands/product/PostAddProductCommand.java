@@ -7,6 +7,7 @@ import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.controller.utils.RedirectionManager;
 import kma.databases.dto.ProductDto;
+import kma.databases.entities.Category;
 import kma.databases.entities.Role;
 import kma.databases.services.ProductService;
 import kma.databases.validators.entities.ProductDtoValidator;
@@ -45,7 +46,7 @@ public class PostAddProductCommand implements Command {
         return new ProductDto.Builder()
                 .setName(request.getParameter(Attribute.NAME))
                 .setCharacteristics(request.getParameter(Attribute.CHARACTERISTICS))
-                //.setCategoryNumber(Long.parseLong(request.getParameter(Attribute.CATEGORY)))
+                .setCategory(new Category.Builder().setNumber(Long.parseLong(request.getParameter(Attribute.CATEGORY))).build())
                 .build();
     }
 

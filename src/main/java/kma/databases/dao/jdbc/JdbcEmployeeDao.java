@@ -31,10 +31,10 @@ public class JdbcEmployeeDao implements EmployeeDao {
     private static String SALARY = "salary";
     private static String DATE_OF_BIRTH = "date_of_birth";
     private static String DATE_OF_START = "date_of_start";
-    private static String PHONE_NUMBER = "phone_number";
-    private static String CITY = "city";
-    private static String STREET = "street";
-    private static String ZIP_CODE = "zip_code";
+    private static String PHONE_NUMBER = "employee.phone_number";
+    private static String CITY = "employee.city";
+    private static String STREET = "employee.street";
+    private static String ZIP_CODE = "employee.zip_code";
     private static String PASSWORD = "password";
 
     private Connection connection;

@@ -24,10 +24,10 @@ public class JdbcCustomerCardDao implements CustomerCardDao {
     private static String SURNAME = "cust_surname";
     private static String NAME = "cust_name";
     private static String PARTONYMIC = "cust_patronymic";
-    private static String PHONE_NUMBER = "phone_number";
-    private static String CITY = "city";
-    private static String STREET = "street";
-    private static String ZIP_CODE = "zip_code";
+    private static String PHONE_NUMBER = "customer_card.phone_number";
+    private static String CITY = "customer_card.city";
+    private static String STREET = "customer_card.street";
+    private static String ZIP_CODE = "customer_card.zip_code";
     private static String PERCENT = "percent";
 
     private Connection connection;
