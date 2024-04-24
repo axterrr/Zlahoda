@@ -68,8 +68,8 @@ public class JdbcSaleDao implements SaleDao {
     @Override
     public void create(Sale sale) {
         try (PreparedStatement query = connection.prepareStatement(CREATE)) {
-            query.setString(1, sale.getStoreProductUPC());
-            query.setString(2, sale.getCheckNumber());
+            query.setString(1, sale.getStoreProduct().getUpc());
+            query.setString(2, sale.getCheck().getNumber());
             query.setLong(3, sale.getProductsNumber());
             query.setBigDecimal(4, sale.getPrice());
             query.executeUpdate();
@@ -83,8 +83,8 @@ public class JdbcSaleDao implements SaleDao {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
             query.setLong(1, sale.getProductsNumber());
             query.setBigDecimal(2, sale.getPrice());
-            query.setString(3, sale.getStoreProductUPC());
-            query.setString(4, sale.getCheckNumber());
+            query.setString(3, sale.getStoreProduct().getUpc());
+            query.setString(4, sale.getCheck().getNumber());
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -114,8 +114,12 @@ public class JdbcSaleDao implements SaleDao {
     }
 
     protected static Sale extractSaleFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Sale.Builder().setPrice(resultSet.getBigDecimal(PRICE)).setProductsNumber(resultSet.getLong(PRODUCTS_NUMBER))
-                .setStoreProductUPC(resultSet.getString(STORE_PRODUCT_UPC)).setCheckNumber(resultSet.getString(CHECK_NUMBER)).build();
+        return new Sale.Builder()
+                .setPrice(resultSet.getBigDecimal(PRICE))
+                .setProductsNumber(resultSet.getLong(PRODUCTS_NUMBER))
+                .setStoreProduct(JdbcStoreProductDao.extractStoreProductFromResultSet(resultSet))
+                .setCheck(JdbcCheckDao.extractCheckFromResultSet(resultSet))
+                .build();
     }
 
 }

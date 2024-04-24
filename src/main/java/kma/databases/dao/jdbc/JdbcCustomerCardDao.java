@@ -19,6 +19,10 @@ public class JdbcCustomerCardDao implements CustomerCardDao {
     private static String UPDATE = "UPDATE `customer_card` SET cust_surname=?, cust_name=?, cust_patronymic=?, " +
             "phone_number=?, city=?, street=?, zip_code=?, percent=? WHERE card_number=?";
     private static String DELETE = "DELETE FROM `customer_card` WHERE card_number=?";
+    private static String GET_BY_PERCENT = "SELECT * FROM `customer_card` " +
+            "WHERE percent BETWEEN ? AND ? ORDER BY cust_surname";
+    private static String GET_BY_SURNAME = "SELECT * FROM `customer_card` " +
+            "WHERE LOWER(cuts_surname) LIKE CONCAT('%', LOWER(?), '%') ORDER BY cust_surname";
 
     private static String NUMBER = "card_number";
     private static String SURNAME = "cust_surname";
@@ -115,6 +119,37 @@ public class JdbcCustomerCardDao implements CustomerCardDao {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    @Override
+    public List<CustomerCard> getByPercent(Long from, Long to) {
+        List<CustomerCard> cards = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_PERCENT)) {
+            query.setLong(1, from);
+            query.setLong(2, to);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                cards.add(extractCustomerCardFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return cards;
+    }
+
+    @Override
+    public List<CustomerCard> getBySurname(String surname) {
+        List<CustomerCard> cards = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_SURNAME)) {
+            query.setString(1, surname);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                cards.add(extractCustomerCardFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return cards;
     }
 
     @Override

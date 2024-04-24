@@ -9,8 +9,8 @@ public class SaleDtoSaleConverter {
 
     public static Sale toSale(SaleDto saleDto) {
         return new Sale.Builder()
-                .setStoreProductUPC(saleDto.getStoreProductUPC())
-                .setCheckNumber(saleDto.getCheckNumber())
+                .setStoreProduct(saleDto.getStoreProduct())
+                .setCheck(saleDto.getCheck())
                 .setProductsNumber(Long.parseLong(saleDto.getProductsNumber()))
                 .setPrice(new BigDecimal(saleDto.getPrice()))
                 .build();

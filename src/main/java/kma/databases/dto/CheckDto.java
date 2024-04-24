@@ -1,9 +1,9 @@
 package kma.databases.dto;
 
-import kma.databases.entities.Check;
-import kma.databases.entities.CustomerCard;
-import kma.databases.entities.Employee;
-import kma.databases.entities.IBuilder;
+import kma.databases.entities.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckDto {
 
@@ -13,6 +13,7 @@ public class CheckDto {
     private String printDate;
     private String totalSum;
     private String vat;
+    private List<Sale> sales;
 
     public static class Builder implements IBuilder<CheckDto> {
 
@@ -45,6 +46,12 @@ public class CheckDto {
 
         public Builder setVat(String vat) {
             check.vat = vat;
+            return this;
+        }
+
+        public Builder setSales(List<Sale> sales) {
+            check.sales = new ArrayList<>();
+            check.sales.addAll(sales);
             return this;
         }
 
@@ -100,5 +107,14 @@ public class CheckDto {
 
     public void setVat(String vat) {
         this.vat = vat;
+    }
+
+    public List<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(List<Sale> sales) {
+        this.sales = new ArrayList<>();
+        this.sales.addAll(sales);
     }
 }

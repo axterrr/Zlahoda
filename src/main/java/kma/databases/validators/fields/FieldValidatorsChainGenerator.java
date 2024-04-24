@@ -1,5 +1,7 @@
 package kma.databases.validators.fields;
 
+import java.util.List;
+
 public class FieldValidatorsChainGenerator {
 
     public static AbstractFieldValidatorHandler getFieldValidatorsChain() {
@@ -23,7 +25,15 @@ public class FieldValidatorsChainGenerator {
         weightFieldValidator.setNextFieldValidator(costFieldValidator);
 
         return emailFieldValidator;*/
+        class A extends AbstractFieldValidatorHandler {
+            public A(FieldValidatorKey fieldValidatorKey) {
+                super(fieldValidatorKey);
+            }
+            @Override
+            void validateField(String fieldValue, List<String> errors) {
 
-        return null;
+            }
+        }
+        return new A(FieldValidatorKey.CURRENCY);
     }
 }

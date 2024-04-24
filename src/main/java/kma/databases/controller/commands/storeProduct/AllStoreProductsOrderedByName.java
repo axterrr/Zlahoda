@@ -1,26 +1,28 @@
-package kma.databases.controller.commands.check;
+package kma.databases.controller.commands.storeProduct;
 
 import kma.databases.constants.Attribute;
 import kma.databases.constants.Page;
 import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
-import kma.databases.services.ProductService;
+import kma.databases.entities.StoreProduct;
 import kma.databases.services.StoreProductService;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.List;
 
-public class GetAddCheckCommand implements Command {
+public class AllStoreProductsOrderedByName implements Command {
 
     private final StoreProductService storeProductService;
 
-    public GetAddCheckCommand(StoreProductService storeProductService) {
+    public AllStoreProductsOrderedByName(StoreProductService storeProductService) {
         this.storeProductService = storeProductService;
     }
 
     @Override
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
-        httpWrapper.getRequest().setAttribute(Attribute.STORE_PRODUCTS, storeProductService.getAllStoreProducts());
-        return Page.ADD_UPDATE_CHECK_VIEW;
+        List<StoreProduct> storeProducts = storeProductService.getAllStoreProductsOrderedByName();
+        httpWrapper.getRequest().setAttribute(Attribute.STORE_PRODUCTS, storeProducts);
+        return Page.ALL_STORE_PRODUCTS_VIEW;
     }
 }

@@ -56,4 +56,16 @@ public class ProductService {
             productDao.delete(productID);
         }
     }
+
+    public List<Product> searchProductByCategory(Long categoryId) {
+        try (ProductDao productDao = daoFactory.createProductDao()) {
+            return productDao.getByCategory(categoryId);
+        }
+    }
+
+    public List<Product> searchProductByName(String name) {
+        try (ProductDao productDao = daoFactory.createProductDao()) {
+            return productDao.getByName(name);
+        }
+    }
 }

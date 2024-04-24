@@ -1,6 +1,7 @@
 package kma.databases.dao.jdbc;
 
 import kma.databases.dao.StoreProductDao;
+import kma.databases.entities.Product;
 import kma.databases.entities.StoreProduct;
 import kma.databases.exceptions.ServerException;
 
@@ -14,12 +15,32 @@ public class JdbcStoreProductDao implements StoreProductDao {
     private static String GET_ALL = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product) " +
             "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
             "ORDER BY SP1.products_number";
-    private static String GET_BY_ID = "SELECT * FROM `store_product` SP1 WHERE UPC=?";
+    private static String GET_BY_ID = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "WHERE SP1.UPC=?";
     private static String CREATE = "INSERT INTO `store_product` " +
             "(UPC, UPC_prom, id_product, selling_price, products_number, promotional_product) VALUES (?, ?, ?, ?, ?, ?)";
     private static String UPDATE = "UPDATE `store_product` SET " +
             "UPC_prom=?, id_product=?, selling_price=?, products_number=?, promotional_product=?  WHERE UPC=?";
     private static String DELETE = "DELETE FROM `store_product` WHERE UPC=?";
+    private static String GET_BY_UPC = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product)" +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "WHERE LOWER(SP1.UPC) LIKE CONCAT('%', LOWER(?), '%')";
+    private static String GET_PROMOTIONAL_ORDER_BY_AMOUNT = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product)" +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "WHERE SP1.promotional_product ORDER BY SP1.products_number";
+    private static String GET_PROMOTIONAL_ORDER_BY_NAME = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product)" +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "WHERE SP1.promotional_product ORDER BY product_name";
+    private static String GET_NOT_PROMOTIONAL_ORDER_BY_AMOUNT = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product)" +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "WHERE NOT SP1.promotional_product ORDER BY SP1.products_number";
+    private static String GET_NOT_PROMOTIONAL_ORDER_BY_NAME = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product)" +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "WHERE NOT SP1.promotional_product ORDER BY product_name";
+    private static String GET_ALL_ORDER_BY_NAME = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "ORDER BY product_name";
 
     private static String SP1 = "SP1.";
     private static String SP2 = "SP2.";
@@ -110,6 +131,88 @@ public class JdbcStoreProductDao implements StoreProductDao {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    public List<StoreProduct> getByUPC(String upc) {
+        List<StoreProduct> storeProducts = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_UPC)) {
+            query.setString(1, upc);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                storeProducts.add(extractStoreProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return storeProducts;
+    }
+
+    @Override
+    public List<StoreProduct> getPromotionalOrderByAmount() {
+        List<StoreProduct> products = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_PROMOTIONAL_ORDER_BY_AMOUNT)) {
+            while (resultSet.next()) {
+                products.add(extractStoreProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<StoreProduct> getPromotionalOrderByName() {
+        List<StoreProduct> products = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_PROMOTIONAL_ORDER_BY_NAME)) {
+            while (resultSet.next()) {
+                products.add(extractStoreProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<StoreProduct> getNotPromotionalOrderByAmount() {
+        List<StoreProduct> products = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_NOT_PROMOTIONAL_ORDER_BY_AMOUNT)) {
+            while (resultSet.next()) {
+                products.add(extractStoreProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<StoreProduct> getNotPromotionalOrderByName() {
+        List<StoreProduct> products = new ArrayList<>();
+        try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_NOT_PROMOTIONAL_ORDER_BY_NAME)) {
+            while (resultSet.next()) {
+                products.add(extractStoreProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<StoreProduct> getAllOrderByName() {
+        List<StoreProduct> products = new ArrayList<>();
+        try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_ORDER_BY_NAME)) {
+            while (resultSet.next()) {
+                products.add(extractStoreProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
     }
 
     @Override

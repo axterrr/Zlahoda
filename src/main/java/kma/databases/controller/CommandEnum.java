@@ -27,7 +27,7 @@ enum CommandEnum {
     DELETE_CATEGORY ("GET:categories/deletecategory", new DeleteCategoryCommand(CategoryService.getInstance())),
 
     ALL_CHECKS ("GET:checks", new AllChecksCommand(CheckService.getInstance())),
-    GET_ADD_CHECK ("GET:checks/addCheck", new GetAddCheckCommand()),
+    GET_ADD_CHECK ("GET:checks/addCheck", new GetAddCheckCommand(StoreProductService.getInstance())),
     POST_ADD_CHECK ("POST:checks/addCheck", new PostAddCheckCommand()),
     DELETE_CHECK ("GET:checks/deleteCheck", new DeleteCheckCommand(CheckService.getInstance())),
 
@@ -37,6 +37,8 @@ enum CommandEnum {
     GET_UPDATE_CUSTOMER_CARD ("GET:customerCards/updateCustomerCard", new GetUpdateCustomerCardCommand(CustomerCardService.getInstance())),
     POST_UPDATE_CUSTOMER_CARD ("POST:customerCards/updateCustomerCard", new PostUpdateCustomerCardCommand(CustomerCardService.getInstance())),
     DELETE_CUSTOMER_CARD ("GET:customerCards/deleteCustomerCard", new DeleteCustomerCardCommand(CustomerCardService.getInstance())),
+    SEARCH_CUSTOMER_CARD_BY_PERCENT ("POST:customerCards/percent", new SearchCustomerCardByPercentCommand(CustomerCardService.getInstance())),
+    SEARCH_CUSTOMER_CARD_BY_SURNAME ("POST:customerCards/surname", new SearchCustomerCardBySurnameCommand(CustomerCardService.getInstance())),
 
     ALL_EMPLOYEES ("GET:employees", new AllEmployeesCommand(EmployeeService.getInstance())),
     GET_ADD_EMPLOYEE ("GET:employees/addEmployee", new GetAddEmployeeCommand()),
@@ -44,20 +46,27 @@ enum CommandEnum {
     GET_UPDATE_EMPLOYEE ("GET:employees/updateEmployee", new GetUpdateEmployeeCommand(EmployeeService.getInstance())),
     POST_UPDATE_EMPLOYEE ("POST:employees/updateEmployee", new PostUpdateEmployeeCommand(EmployeeService.getInstance())),
     DELETE_EMPLOYEE ("GET:employees/deleteEmployee", new DeleteEmployeeCommand(EmployeeService.getInstance())),
+    ALL_CASHIERS ("GET:employees/cashiers", new AllEmployyesCashiersCommand(EmployeeService.getInstance())),
+    SEARCH_BY_SURNAME ("POST:employees/surname", new SearchEmployeeBySurnameCommand(EmployeeService.getInstance())),
 
-    ALL_PRODUCTS ("GET:products", new AllProductsCommand(ProductService.getInstance())),
+    ALL_PRODUCTS ("GET:products", new AllProductsCommand(ProductService.getInstance(), CategoryService.getInstance())),
     GET_ADD_PRODUCT ("GET:products/addProduct", new GetAddProductCommand()),
     POST_ADD_PRODUCT ("POST:products/addProduct", new PostAddProductCommand(ProductService.getInstance())),
     GET_UPDATE_PRODUCT ("GET:products/updateProduct", new GetUpdateProductCommand(ProductService.getInstance())),
     POST_UPDATE_PRODUCT ("POST:products/updateProduct", new PostUpdateProductCommand(ProductService.getInstance())),
     DELETE_PRODUCT ("GET:products/deleteProduct", new DeleteProductCommand(ProductService.getInstance())),
+    SEARCH_PRODUCT_BY_CATEGORY ("POST:products/category", new SearchProductByCategoryCommand(ProductService.getInstance())),
+    SEARCH_PRODUCT_BY_NAME ("POST:products/name", new SearchProductByCategoryCommand(ProductService.getInstance())),
 
     ALL_STORE_PRODUCTS ("GET:storeProducts", new AllStoreProductsCommand(StoreProductService.getInstance())),
     GET_ADD_STORE_PRODUCT ("GET:storeProducts/addStoreProduct", new GetAddStoreProductCommand()),
     POST_ADD_STORE_PRODUCT ("POST:storeProducts/addStoreProduct", new PostAddStoreProductCommand(StoreProductService.getInstance())),
     GET_UPDATE_STORE_PRODUCT ("GET:storeProducts/updateStoreProduct", new GetUpdateStoreProductCommand(StoreProductService.getInstance())),
     POST_UPDATE_STORE_PRODUCT ("POST:storeProducts/updateStoreProduct", new PostUpdateStoreProductCommand(StoreProductService.getInstance())),
-    DELETE_STORE_PRODUCT ("GET:storeProducts/deleteStoreProduct", new DeleteStoreProductCommand(StoreProductService.getInstance()));
+    DELETE_STORE_PRODUCT ("GET:storeProducts/deleteStoreProduct", new DeleteStoreProductCommand(StoreProductService.getInstance())),
+    SEARCH_STORE_PRODUCT_BY_UPC ("POST:storeProducts/upc", new SearchStoreProductByUPCCommand(StoreProductService.getInstance())),
+    GET_PROMOTIONAL_STORE_PRODUCTS ("POST:storeProducts/promotional", new AllPromotionalStoreProductsCommand(StoreProductService.getInstance())),
+    ALL_STORE_PRODUCTS_ORDERED_BY_NAME ("POST:storeProducts/orderedByName", new AllStoreProductsOrderedByName(StoreProductService.getInstance())),;
 
     private String key;
     private Command command;

@@ -56,4 +56,40 @@ public class StoreProductService {
             storeProductDao.delete(UPC);
         }
     }
+
+    public List<StoreProduct> searchStoreProductsByUPC(String upc) {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getByUPC(upc);
+        }
+    }
+
+    public List<StoreProduct> getPromotionalStoreProductsOrderedByAmount() {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getPromotionalOrderByAmount();
+        }
+    }
+
+    public List<StoreProduct> getPromotionalStoreProductsOrderedByName() {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getPromotionalOrderByName();
+        }
+    }
+
+    public List<StoreProduct> getNotPromotionalStoreProductsOrderedByAmount() {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getNotPromotionalOrderByAmount();
+        }
+    }
+
+    public List<StoreProduct> getNotPromotionalStoreProductsOrderedByName() {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getNotPromotionalOrderByName();
+        }
+    }
+
+    public List<StoreProduct> getAllStoreProductsOrderedByName() {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getAllOrderByName();
+        }
+    }
 }

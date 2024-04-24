@@ -63,4 +63,16 @@ public class EmployeeService {
             employeeDao.delete(employeeID);
         }
     }
+
+    public List<Employee> searchEmployeeBySurname(String surname) {
+        try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
+            return employeeDao.getBySurname(surname);
+        }
+    }
+
+    public List<Employee> getAllEmployyesCashiers() {
+        try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
+            return employeeDao.getAllCashiers();
+        }
+    }
 }

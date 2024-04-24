@@ -2,6 +2,8 @@ package kma.databases.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Check {
 
@@ -11,6 +13,7 @@ public class Check {
     private LocalDateTime printDate;
     private BigDecimal totalSum;
     private BigDecimal vat;
+    private List<Sale> sales;
 
     public static class Builder implements IBuilder<Check> {
 
@@ -43,6 +46,12 @@ public class Check {
 
         public Builder setVat(BigDecimal vat) {
             check.vat = vat;
+            return this;
+        }
+
+        public Builder setSales(List<Sale> sales) {
+            check.sales = new ArrayList<>();
+            check.sales.addAll(sales);
             return this;
         }
 
@@ -98,5 +107,14 @@ public class Check {
 
     public void setVat(BigDecimal vat) {
         this.vat = vat;
+    }
+
+    public List<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(List<Sale> sales) {
+        this.sales = new ArrayList<>();
+        this.sales.addAll(sales);
     }
 }

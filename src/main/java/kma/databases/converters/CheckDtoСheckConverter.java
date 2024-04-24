@@ -16,6 +16,7 @@ public class CheckDtoСheckConverter {
                 .setCustomerCard(checkDto.getCustomerCard())
                 .setPrintDate(LocalDateTime.parse(checkDto.getPrintDate()))
                 .setTotalSum(new BigDecimal(checkDto.getTotalSum()))
+                .setSales(checkDto.getSales())
                 .setVat(new BigDecimal(checkDto.getVat()));
         if(checkDto.getNumber() == null) {
             builder.setNumber(UUID.randomUUID().toString());

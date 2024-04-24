@@ -56,4 +56,16 @@ public class CustomerCardService {
             customerCardDao.delete(cardNumber);
         }
     }
+
+    public List<CustomerCard> searchCustomerCardByPercent(Long from, Long to) {
+        try (CustomerCardDao customerCardDao = daoFactory.createCustomerCardDao()) {
+            return customerCardDao.getByPercent(from, to);
+        }
+    }
+
+    public List<CustomerCard> searchCustomerCardBySurname(String surname) {
+        try (CustomerCardDao customerCardDao = daoFactory.createCustomerCardDao()) {
+            return customerCardDao.getBySurname(surname);
+        }
+    }
 }

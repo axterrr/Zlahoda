@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public class Sale {
 
-    private String storeProductUPC;
-    private String checkNumber;
+    private StoreProduct storeProduct;
+    private Check check;
     private Long productsNumber;
     private BigDecimal price;
 
@@ -13,13 +13,13 @@ public class Sale {
 
         Sale sale = new Sale();
 
-        public Builder setStoreProductUPC(String storeProductUPC) {
-            sale.storeProductUPC = storeProductUPC;
+        public Builder setStoreProduct(StoreProduct storeProduct) {
+            sale.storeProduct = storeProduct;
             return this;
         }
 
-        public Builder setCheckNumber(String checkNumber) {
-            sale.checkNumber = checkNumber;
+        public Builder setCheck(Check check) {
+            sale.check = check;
             return this;
         }
 
@@ -39,20 +39,20 @@ public class Sale {
         }
     }
 
-    public String getStoreProductUPC() {
-        return storeProductUPC;
+    public StoreProduct getStoreProduct() {
+        return storeProduct;
     }
 
-    public void setStoreProductUPC(String storeProductUPC) {
-        this.storeProductUPC = storeProductUPC;
+    public void setStoreProduct(StoreProduct storeProduct) {
+        this.storeProduct = storeProduct;
     }
 
-    public String getCheckNumber() {
-        return checkNumber;
+    public Check getCheck() {
+        return check;
     }
 
-    public void setCheckNumber(String checkNumber) {
-        this.checkNumber = checkNumber;
+    public void setCheck(Check check) {
+        this.check = check;
     }
 
     public Long getProductsNumber() {

@@ -12,12 +12,18 @@ import java.util.Optional;
 public class JdbcProductDao implements ProductDao {
 
     private static String GET_ALL = "SELECT * FROM `product` INNER JOIN `category` " +
-            "ON product.category_number = category.category_number ORDER BY id_product";
+            "ON product.category_number = category.category_number ORDER BY product_name";
     private static String GET_BY_ID = "SELECT * FROM `product` INNER JOIN `category` " +
             "ON product.category_number = category.category_number WHERE id_product=?";
     private static String CREATE = "INSERT INTO `product` (category_number, product_name, characteristics) VALUES (?, ?, ?)";
     private static String UPDATE = "UPDATE `product` SET category_number=?, product_name=?, characteristics=? WHERE id_product=?";
     private static String DELETE = "DELETE FROM `product` WHERE id_product=?";
+    private static String GET_BY_CATEGORY = "SELECT * FROM `product` INNER JOIN `category` " +
+            "ON product.category_number = category.category_number WHERE product.category_number=? " +
+            "ORDER BY product_name";
+    private static String GET_BY_NAME = "SELECT * FROM `product` INNER JOIN `category` " +
+            "ON product.category_number = category.category_number " +
+            "WHERE LOWER(product_name) LIKE CONCAT('%', LOWER(?), '%') ORDER BY product_name";
 
     private static String ID = "id_product";
     private static String CATEGORY_NUMBER = "category_number";
@@ -102,6 +108,36 @@ public class JdbcProductDao implements ProductDao {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    @Override
+    public List<Product> getByCategory(Long categoryId) {
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_CATEGORY)) {
+            query.setLong(1, categoryId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                products.add(extractProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getByName(String name) {
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_NAME)) {
+            query.setString(1, name);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                products.add(extractProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
     }
 
     @Override

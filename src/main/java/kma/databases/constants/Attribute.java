@@ -26,6 +26,8 @@ public final class Attribute {
     public static final String STREET = "street";
     public static final String ZIP_CODE = "zipCode";
     public static final String PERCENT = "percent";
+    public static final String PERCENT_FROM = "percentFrom";
+    public static final String PERCENT_TO = "percentTo";
 
     public static final String EMPLOYEES = "employees";
     public static final String EMPLOYEE = "employee";
@@ -52,6 +54,7 @@ public final class Attribute {
     public static final String PRICE = "price";
     public static final String NUMBER = "number";
     public static final String IS_PROMOTIONAL = "isPromotional";
+    public static final String ORDER_BY = "orderBy";
 
     public static final String CHECKS = "checks";
     public static final String CHECK = "check";
