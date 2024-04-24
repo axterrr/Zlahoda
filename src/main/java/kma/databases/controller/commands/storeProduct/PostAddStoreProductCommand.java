@@ -8,6 +8,7 @@ import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.controller.utils.RedirectionManager;
 import kma.databases.dto.StoreProductDto;
 import kma.databases.dto.ProductDto;
+import kma.databases.entities.Product;
 import kma.databases.entities.Role;
 import kma.databases.entities.StoreProduct;
 import kma.databases.services.StoreProductService;
@@ -47,8 +48,8 @@ public class PostAddStoreProductCommand implements Command {
 
     private StoreProductDto getUserInput(HttpServletRequest request) {
         return new StoreProductDto.Builder()
-                //.setPromUPC(request.getParameter(Attribute.PROMOTIONAL_UPC))
-                //.setProductId(Long.parseLong(request.getParameter(Attribute.ID_PRODUCT)))
+                .setProm(new StoreProduct.Builder().setUPC(request.getParameter(Attribute.PROMOTIONAL_UPC)).build())
+                .setProduct(new Product.Builder().setId(Long.parseLong(request.getParameter(Attribute.ID_PRODUCT))).build())
                 .setAmount(request.getParameter(Attribute.NUMBER))
                 .setPrice(request.getParameter(Attribute.PRICE))
                 .setPromotional(request.getParameter(Attribute.IS_PROMOTIONAL))

@@ -11,14 +11,18 @@ import java.util.Optional;
 
 public class JdbcStoreProductDao implements StoreProductDao {
 
-    private static String GET_ALL = "SELECT * FROM `store_product` ORDER BY products_number";
-    private static String GET_BY_ID = "SELECT * FROM `store_product` WHERE UPC=?";
+    private static String GET_ALL = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
+            "ORDER BY SP1.products_number";
+    private static String GET_BY_ID = "SELECT * FROM `store_product` SP1 WHERE UPC=?";
     private static String CREATE = "INSERT INTO `store_product` " +
             "(UPC, UPC_prom, id_product, selling_price, products_number, promotional_product) VALUES (?, ?, ?, ?, ?, ?)";
     private static String UPDATE = "UPDATE `store_product` SET " +
             "UPC_prom=?, id_product=?, selling_price=?, products_number=?, promotional_product=?  WHERE UPC=?";
     private static String DELETE = "DELETE FROM `store_product` WHERE UPC=?";
 
+    private static String SP1 = "SP1.";
+    private static String SP2 = "SP2.";
     private static String UPC = "UPC";
     private static String PROM_UPC = "UPC_prom";
     private static String PRODUCT_ID = "id_product";
@@ -72,8 +76,8 @@ public class JdbcStoreProductDao implements StoreProductDao {
     public void create(StoreProduct product) {
         try (PreparedStatement query = connection.prepareStatement(CREATE)) {
             query.setString(1, product.getUpc());
-            //query.setString(2, product.getProm());
-            //query.setLong(3, product.getProductId());
+            query.setString(2, product.getProm().getUpc());
+            query.setLong(3, product.getProduct().getId());
             query.setBigDecimal(4, product.getPrice());
             query.setLong(5, product.getAmount());
             query.setBoolean(6, product.isPromotional());
@@ -86,8 +90,8 @@ public class JdbcStoreProductDao implements StoreProductDao {
     @Override
     public void update(StoreProduct product) {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
-            //query.setString(1, product.getProm());
-            //query.setLong(2, product.getProductId());
+            query.setString(1, product.getProm().getUpc());
+            query.setLong(2, product.getProduct().getId());
             query.setBigDecimal(3, product.getPrice());
             query.setLong(4, product.getAmount());
             query.setBoolean(5, product.isPromotional());
@@ -120,11 +124,24 @@ public class JdbcStoreProductDao implements StoreProductDao {
     }
 
     protected static StoreProduct extractStoreProductFromResultSet(ResultSet resultSet) throws SQLException {
-        return new StoreProduct.Builder().setUPC(resultSet.getString(UPC)).setPrice(resultSet.getBigDecimal(PRICE))
-                .setAmount(resultSet.getLong(PRODUCTS_NUMBER)).setPromotional(resultSet.getBoolean(PROMOTIONAL_PRODUCT))
-                //.setProduct(resultSet.getLong(PRODUCT_ID))
-                //.setProm(resultSet.getString(PROM_UPC))
+        return new StoreProduct.Builder()
+                .setUPC(resultSet.getString(SP1+UPC))
+                .setPrice(resultSet.getBigDecimal(SP1+PRICE))
+                .setAmount(resultSet.getLong(SP1+PRODUCTS_NUMBER))
+                .setPromotional(resultSet.getBoolean(SP1+PROMOTIONAL_PRODUCT))
+                .setProduct(JdbcProductDao.extractProductFromResultSet(resultSet))
+                .setProm(extractPromotionalProductFromResultSet(resultSet))
                 .build();
     }
 
+    private static StoreProduct extractPromotionalProductFromResultSet(ResultSet resultSet) throws SQLException {
+        return new StoreProduct.Builder()
+                .setUPC(resultSet.getString(SP2+UPC))
+                .setPrice(resultSet.getBigDecimal(SP2+PRICE))
+                .setAmount(resultSet.getLong(SP2+PRODUCTS_NUMBER))
+                .setPromotional(resultSet.getBoolean(SP2+PROMOTIONAL_PRODUCT))
+                .setProduct(JdbcProductDao.extractProductFromResultSet(resultSet))
+                .setProm(null)
+                .build();
+    }
 }
