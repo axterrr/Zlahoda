@@ -22,7 +22,7 @@ public class JdbcCustomerCardDao implements CustomerCardDao {
     private static String GET_BY_PERCENT = "SELECT * FROM `customer_card` " +
             "WHERE percent BETWEEN ? AND ? ORDER BY cust_surname";
     private static String GET_BY_SURNAME = "SELECT * FROM `customer_card` " +
-            "WHERE LOWER(cuts_surname) LIKE CONCAT('%', LOWER(?), '%') ORDER BY cust_surname";
+            "WHERE LOWER(cust_surname) LIKE CONCAT('%', LOWER(?), '%') ORDER BY cust_surname";
 
     private static String NUMBER = "card_number";
     private static String SURNAME = "cust_surname";
