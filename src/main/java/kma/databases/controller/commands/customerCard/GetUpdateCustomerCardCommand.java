@@ -25,7 +25,7 @@ public class GetUpdateCustomerCardCommand implements Command {
         HttpServletRequest request = httpWrapper.getRequest();
         String customerCardId = request.getParameter(Attribute.ID_CUSTOMER_CARD);
         Optional<CustomerCard> customerCard = customerCardService.getCustomerCardById(customerCardId);
-        request.setAttribute(Attribute.CUSTOMER_CARD, customerCard.get());
+        request.setAttribute(Attribute.CUSTOMER_CARD_DTO, customerCard.get());
         return Page.ADD_UPDATE_CUSTOMER_CARD_VIEW;
     }
 }

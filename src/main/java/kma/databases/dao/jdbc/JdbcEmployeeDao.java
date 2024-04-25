@@ -23,6 +23,7 @@ public class JdbcEmployeeDao implements EmployeeDao {
             "salary=?, date_of_birth=?, phone_number=?, city=?, street=?, zip_code=?, password=? WHERE id_employee=?";
     private static String DELETE = "DELETE FROM `employee` WHERE id_employee=?";
     private static String GET_ALL_CASHIERS = "SELECT * FROM `employee` WHERE empl_role='cashier' ORDER BY empl_surname";
+    private static String GET_ALL_MANAGERS = "SELECT * FROM `employee` WHERE empl_role='manager' ORDER BY empl_surname";
     private static String GET_BY_SURNAME = "SELECT * FROM `employee` WHERE LOWER(empl_surname) LIKE CONCAT('%', LOWER(?), '%')";
 
     private static String ID = "id_employee";
@@ -153,6 +154,19 @@ public class JdbcEmployeeDao implements EmployeeDao {
     public List<Employee> getAllCashiers() {
         List<Employee> employees = new ArrayList<>();
         try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_CASHIERS)) {
+            while (resultSet.next()) {
+                employees.add(extractEmployeeFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return employees;
+    }
+
+    @Override
+    public List<Employee> getAllManagers() {
+        List<Employee> employees = new ArrayList<>();
+        try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_MANAGERS)) {
             while (resultSet.next()) {
                 employees.add(extractEmployeeFromResultSet(resultSet));
             }

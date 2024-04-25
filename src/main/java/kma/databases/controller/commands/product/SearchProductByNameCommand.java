@@ -6,8 +6,10 @@ import kma.databases.constants.ServletPath;
 import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.controller.utils.RedirectionManager;
+import kma.databases.entities.Category;
 import kma.databases.entities.Employee;
 import kma.databases.entities.Product;
+import kma.databases.services.CategoryService;
 import kma.databases.services.EmployeeService;
 import kma.databases.services.ProductService;
 import kma.databases.validators.fields.AbstractFieldValidatorHandler;
@@ -24,9 +26,11 @@ import java.util.Map;
 public class SearchProductByNameCommand implements Command {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public SearchProductByNameCommand(ProductService productService) {
+    public SearchProductByNameCommand(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -51,6 +55,8 @@ public class SearchProductByNameCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
+        List<Category> categories = categoryService.getAllCategories();
+        httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, categories);
         httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, products);
         return Page.ALL_PRODUCTS_VIEW;
     }

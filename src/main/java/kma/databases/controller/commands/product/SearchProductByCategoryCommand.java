@@ -6,7 +6,9 @@ import kma.databases.constants.ServletPath;
 import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.controller.utils.RedirectionManager;
+import kma.databases.entities.Category;
 import kma.databases.entities.Product;
+import kma.databases.services.CategoryService;
 import kma.databases.services.ProductService;
 import kma.databases.validators.fields.AbstractFieldValidatorHandler;
 import kma.databases.validators.fields.FieldValidatorKey;
@@ -22,9 +24,11 @@ import java.util.Map;
 public class SearchProductByCategoryCommand implements Command {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public SearchProductByCategoryCommand(ProductService productService) {
+    public SearchProductByCategoryCommand(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -41,7 +45,11 @@ public class SearchProductByCategoryCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
-        List<Product> products = productService.searchProductByCategory(Long.parseLong(categoryId));
+        List<Product> products;
+        if(categoryId.isEmpty())
+            products = productService.getAllProducts();
+         else
+             products = productService.searchProductByCategory(Long.parseLong(categoryId));
 
         if (products.isEmpty()) {
             urlParams = new HashMap<>();
@@ -50,6 +58,8 @@ public class SearchProductByCategoryCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
+        List<Category> categories = categoryService.getAllCategories();
+        httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, categories);
         httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, products);
         return Page.ALL_PRODUCTS_VIEW;
     }

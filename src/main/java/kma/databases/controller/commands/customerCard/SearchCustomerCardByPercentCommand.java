@@ -53,7 +53,7 @@ public class SearchCustomerCardByPercentCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
-        httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEE, cards);
+        httpWrapper.getRequest().setAttribute(Attribute.CUSTOMER_CARDS, cards);
         return Page.ALL_CUSTOMER_CARDS_VIEW;
     }
 

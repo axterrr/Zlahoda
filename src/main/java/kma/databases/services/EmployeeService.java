@@ -70,9 +70,15 @@ public class EmployeeService {
         }
     }
 
-    public List<Employee> getAllEmployyesCashiers() {
+    public List<Employee> getAllEmployeesCashiers() {
         try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
             return employeeDao.getAllCashiers();
+        }
+    }
+
+    public List<Employee> getAllEmployeesManagers() {
+        try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
+            return employeeDao.getAllManagers();
         }
     }
 }

@@ -32,7 +32,7 @@ public class SearchStoreProductByUPCCommand implements Command {
     @Override
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
 
-        String UPC = httpWrapper.getRequest().getParameter(Attribute.STORE_PRODUCT);
+        String UPC = httpWrapper.getRequest().getParameter(Attribute.UPC);
         List<String> errors = validateUserInput(UPC);
         Map<String, String> urlParams;
 
@@ -52,7 +52,7 @@ public class SearchStoreProductByUPCCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
-        httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, products);
+        httpWrapper.getRequest().setAttribute(Attribute.STORE_PRODUCTS, products);
         return Page.ALL_STORE_PRODUCTS_VIEW;
     }
 

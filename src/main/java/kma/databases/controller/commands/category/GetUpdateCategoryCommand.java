@@ -25,7 +25,7 @@ public class GetUpdateCategoryCommand implements Command {
         HttpServletRequest request = httpWrapper.getRequest();
         Long categoryId = Long.parseLong(request.getParameter(Attribute.ID_CATEGORY));
         Optional<Category> category = categoryService.getCategoryById(categoryId);
-        request.setAttribute(Attribute.CATEGORY, category.get());
+        request.setAttribute(Attribute.CATEGORY_DTO, category.get());
         return Page.ADD_UPDATE_CATEGORY_VIEW;
     }
 }

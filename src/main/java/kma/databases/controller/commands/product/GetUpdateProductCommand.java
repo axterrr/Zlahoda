@@ -26,7 +26,7 @@ public class GetUpdateProductCommand implements Command {
         HttpServletRequest request = httpWrapper.getRequest();
         Long productId = Long.parseLong(request.getParameter(Attribute.ID_PRODUCT));
         Optional<Product> product = productService.getProductById(productId);
-        request.setAttribute(Attribute.PRODUCT, product.get());
+        request.setAttribute(Attribute.PRODUCT_DTO, product.get());
         return Page.ADD_UPDATE_PRODUCT_VIEW;
     }
 }

@@ -8,10 +8,8 @@ import java.util.Optional;
 public interface EmployeeDao extends GenericDao<Employee, String>, AutoCloseable {
 
     Optional<Employee> getByCredentials(String phone, String password);
-
     List<Employee> getAllCashiers();
-
+    List<Employee> getAllManagers();
     List<Employee> getBySurname(String surname);
-
     void close();
 }

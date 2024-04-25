@@ -1,16 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vhibskyi
-  Date: 20.04.2024
-  Time: 04:54
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-
+<footer class="footer">
+    <p>&copy; 2024 Zlahoda</p>
+</footer>
+</div>
+<script type="text/javascript"
+        src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
+<script type="text/javascript"
+        src="<c:url value="/resources/bootstrap-3.3.7/js/bootstrap.min.js"/>"></script>
 </body>
 </html>

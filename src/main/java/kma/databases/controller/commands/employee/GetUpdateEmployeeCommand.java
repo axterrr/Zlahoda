@@ -27,7 +27,7 @@ public class GetUpdateEmployeeCommand implements Command {
         HttpServletRequest request = httpWrapper.getRequest();
         String employeeId = request.getParameter(Attribute.ID_EMPLOYEE);
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        request.setAttribute(Attribute.EMPLOYEE, employee.get());
+        request.setAttribute(Attribute.EMPLOYEE_DTO, employee.get());
         return Page.ADD_UPDATE_EMPLOYEE_VIEW;
     }
 }

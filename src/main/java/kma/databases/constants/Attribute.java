@@ -49,6 +49,7 @@ public final class Attribute {
     public static final String STORE_PRODUCTS = "storeProducts";
     public static final String STORE_PRODUCT = "storeProduct";
     public static final String ID_STORE_PRODUCT = "id_storeProduct";
+    public static final String UPC = "upc";
     public static final String STORE_PRODUCT_DTO = "storeProductDto";
     public static final String PROMOTIONAL_UPC = "promotionalUPC";
     public static final String PRICE = "price";

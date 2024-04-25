@@ -27,7 +27,7 @@ public class GetUpdateStoreProductCommand implements Command {
         HttpServletRequest request = httpWrapper.getRequest();
         String storeProductId = request.getParameter(Attribute.ID_STORE_PRODUCT);
         Optional<StoreProduct> storeProduct = storeProductService.getStoreProductById(storeProductId);
-        request.setAttribute(Attribute.STORE_PRODUCT, storeProduct.get());
+        request.setAttribute(Attribute.STORE_PRODUCT_DTO, storeProduct.get());
         return Page.ADD_UPDATE_STORE_PRODUCT_VIEW;
     }
 }
