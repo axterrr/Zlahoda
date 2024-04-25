@@ -21,7 +21,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
     private static String CREATE = "INSERT INTO `store_product` " +
             "(UPC, UPC_prom, id_product, selling_price, products_number, promotional_product) VALUES (?, ?, ?, ?, ?, ?)";
     private static String UPDATE = "UPDATE `store_product` SET " +
-            "UPC_prom=?, id_product=?, selling_price=?, products_number=?, promotional_product=?  WHERE UPC=?";
+            "selling_price=?, products_number=? WHERE UPC=?";
     private static String DELETE = "DELETE FROM `store_product` WHERE UPC=?";
     private static String GET_BY_UPC = "SELECT * FROM (`store_product` SP1 JOIN `product` USING (id_product)" +
             "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
@@ -111,12 +111,9 @@ public class JdbcStoreProductDao implements StoreProductDao {
     @Override
     public void update(StoreProduct product) {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
-            query.setString(1, product.getProm().getUpc());
-            query.setLong(2, product.getProduct().getId());
-            query.setBigDecimal(3, product.getPrice());
-            query.setLong(4, product.getAmount());
-            query.setBoolean(5, product.isPromotional());
-            query.setString(6, product.getUpc());
+            query.setBigDecimal(1, product.getPrice());
+            query.setLong(2, product.getAmount());
+            query.setString(3, product.getUpc());
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);

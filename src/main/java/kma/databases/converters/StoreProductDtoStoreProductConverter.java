@@ -17,10 +17,7 @@ public class StoreProductDtoStoreProductConverter {
                 .setAmount(Long.parseLong(storeProductDto.getAmount()))
                 .setPromotional(storeProductDto.isPromotional().equals("true"));
         if(storeProductDto.getUPC()==null) {
-            builder.setUPC(UUID.randomUUID().toString());
-        }
-        if(storeProductDto.getProm() == null || storeProductDto.getProm().getUpc() == null) {
-            builder.setProm(null);
+            builder.setUPC(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 12));
         }
         return builder.build();
     }

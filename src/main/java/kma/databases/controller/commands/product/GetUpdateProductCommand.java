@@ -6,6 +6,7 @@ import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.entities.Employee;
 import kma.databases.entities.Product;
+import kma.databases.services.CategoryService;
 import kma.databases.services.ProductService;
 
 import javax.servlet.ServletException;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class GetUpdateProductCommand implements Command {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public GetUpdateProductCommand(ProductService productService) {
+    public GetUpdateProductCommand(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -27,6 +30,7 @@ public class GetUpdateProductCommand implements Command {
         Long productId = Long.parseLong(request.getParameter(Attribute.ID_PRODUCT));
         Optional<Product> product = productService.getProductById(productId);
         request.setAttribute(Attribute.PRODUCT_DTO, product.get());
+        request.setAttribute(Attribute.CATEGORIES, categoryService.getAllCategories());
         return Page.ADD_UPDATE_PRODUCT_VIEW;
     }
 }

@@ -50,9 +50,9 @@ enum CommandEnum {
     SEARCH_BY_SURNAME ("POST:employees/surname", new SearchEmployeeBySurnameCommand(EmployeeService.getInstance())),
 
     ALL_PRODUCTS ("GET:products", new AllProductsCommand(ProductService.getInstance(), CategoryService.getInstance())),
-    GET_ADD_PRODUCT ("GET:products/addProduct", new GetAddProductCommand()),
+    GET_ADD_PRODUCT ("GET:products/addProduct", new GetAddProductCommand(CategoryService.getInstance())),
     POST_ADD_PRODUCT ("POST:products/addProduct", new PostAddProductCommand(ProductService.getInstance())),
-    GET_UPDATE_PRODUCT ("GET:products/updateProduct", new GetUpdateProductCommand(ProductService.getInstance())),
+    GET_UPDATE_PRODUCT ("GET:products/updateProduct", new GetUpdateProductCommand(ProductService.getInstance(), CategoryService.getInstance())),
     POST_UPDATE_PRODUCT ("POST:products/updateProduct", new PostUpdateProductCommand(ProductService.getInstance())),
     DELETE_PRODUCT ("GET:products/deleteProduct", new DeleteProductCommand(ProductService.getInstance())),
     SEARCH_PRODUCT_BY_CATEGORY ("POST:products/category", new SearchProductByCategoryCommand(ProductService.getInstance(), CategoryService.getInstance())),
@@ -60,7 +60,7 @@ enum CommandEnum {
 
     ALL_STORE_PRODUCTS ("GET:storeProducts", new AllStoreProductsCommand(StoreProductService.getInstance())),
     ALL_STORE_PRODUCTS_POST ("POST:storeProducts", new AllStoreProductsCommand(StoreProductService.getInstance())),
-    GET_ADD_STORE_PRODUCT ("GET:storeProducts/addStoreProduct", new GetAddStoreProductCommand()),
+    GET_ADD_STORE_PRODUCT ("GET:storeProducts/addStoreProduct", new GetAddStoreProductCommand(ProductService.getInstance())),
     POST_ADD_STORE_PRODUCT ("POST:storeProducts/addStoreProduct", new PostAddStoreProductCommand(StoreProductService.getInstance())),
     GET_UPDATE_STORE_PRODUCT ("GET:storeProducts/updateStoreProduct", new GetUpdateStoreProductCommand(StoreProductService.getInstance())),
     POST_UPDATE_STORE_PRODUCT ("POST:storeProducts/updateStoreProduct", new PostUpdateStoreProductCommand(StoreProductService.getInstance())),

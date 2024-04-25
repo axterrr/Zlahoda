@@ -49,7 +49,7 @@ public class PostAddStoreProductCommand implements Command {
     private StoreProductDto getUserInput(HttpServletRequest request) {
         return new StoreProductDto.Builder()
                 .setProm(new StoreProduct.Builder().setUPC(request.getParameter(Attribute.PROMOTIONAL_UPC)).build())
-                .setProduct(new Product.Builder().setId(Long.parseLong(request.getParameter(Attribute.ID_PRODUCT))).build())
+                .setProduct(new Product.Builder().setId(Long.parseLong(request.getParameter(Attribute.PRODUCT))).build())
                 .setAmount(request.getParameter(Attribute.NUMBER))
                 .setPrice(request.getParameter(Attribute.PRICE))
                 .setPromotional(request.getParameter(Attribute.IS_PROMOTIONAL))

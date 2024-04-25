@@ -2,6 +2,7 @@ package kma.databases.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Employee {
 
@@ -150,12 +151,20 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getDateOfBirthString() {
+        return dateOfStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     public LocalDateTime getDateOfStart() {
         return dateOfStart;
     }
 
     public void setDateOfStart(LocalDateTime dateOfStart) {
         this.dateOfStart = dateOfStart;
+    }
+
+    public String getDateOfStartString() {
+        return dateOfStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public String getPhoneNumber() {

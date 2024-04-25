@@ -45,11 +45,9 @@ public class PostUpdateStoreProductCommand implements Command {
     private StoreProductDto getUserInput(HttpServletRequest request) {
         return new StoreProductDto.Builder()
                 .setUPC(request.getParameter(Attribute.ID_STORE_PRODUCT))
-                .setProm(new StoreProduct.Builder().setUPC(request.getParameter(Attribute.PROMOTIONAL_UPC)).build())
-                .setProduct(new Product.Builder().setId(Long.parseLong(request.getParameter(Attribute.ID_PRODUCT))).build())
                 .setAmount(request.getParameter(Attribute.NUMBER))
                 .setPrice(request.getParameter(Attribute.PRICE))
-                .setPromotional(request.getParameter(Attribute.IS_PROMOTIONAL))
+                .setPromotional("false")
                 .build();
     }
 

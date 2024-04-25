@@ -19,7 +19,7 @@ public class CustomerCardDtoCustomerCardConverter {
                 .setZipCode(customerCardDto.getZipCode())
                 .setPercent(Long.parseLong(customerCardDto.getPercent()));
         if(customerCardDto.getNumber()==null) {
-            builder.setNumber(UUID.randomUUID().toString());
+            builder.setNumber(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 13));
         }
         if(customerCardDto.getPatronymic()==null || customerCardDto.getPatronymic().isEmpty()) {
             builder.setPatronymic(null);

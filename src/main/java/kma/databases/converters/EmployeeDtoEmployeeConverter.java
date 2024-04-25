@@ -4,7 +4,10 @@ import kma.databases.dto.EmployeeDto;
 import kma.databases.entities.Employee;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class EmployeeDtoEmployeeConverter {
@@ -17,15 +20,17 @@ public class EmployeeDtoEmployeeConverter {
                 .setPatronymic(employeeDto.getPatronymic())
                 .setRole(employeeDto.getRole())
                 .setSalary(new BigDecimal(employeeDto.getSalary()))
-                .setDateOfBirth(LocalDateTime.parse(employeeDto.getDateOfBirth()))
-                .setDateOfStart(LocalDateTime.parse(employeeDto.getDateOfStart()))
+                .setDateOfBirth(LocalDateTime.of(LocalDate.parse(employeeDto.getDateOfBirth(),
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd")), LocalTime.MIDNIGHT))
+                .setDateOfStart(LocalDateTime.of(LocalDate.parse(employeeDto.getDateOfBirth(),
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd")), LocalTime.MIDNIGHT))
                 .setPhoneNumber(employeeDto.getPhoneNumber())
                 .setCity(employeeDto.getCity())
                 .setStreet(employeeDto.getStreet())
                 .setZipCode(employeeDto.getZipCode())
                 .setPassword(employeeDto.getPassword());
         if(employeeDto.getId()==null) {
-            builder.setId(UUID.randomUUID().toString());
+            builder.setId(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10));
         }
         if(employeeDto.getPatronymic()==null || employeeDto.getPatronymic().isEmpty()) {
             builder.setPatronymic(null);
