@@ -19,7 +19,9 @@ public class CheckDtoСheckConverter {
                 .setSales(checkDto.getSales())
                 .setVat(new BigDecimal(checkDto.getVat()));
         if(checkDto.getNumber() == null) {
-            builder.setNumber(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10));
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+            builder.setNumber(uuid);
+            checkDto.setNumber(uuid);
         }
         if(checkDto.getCustomerCard() == null || checkDto.getCustomerCard().getNumber() == null) {
             builder.setCustomerCard(null);

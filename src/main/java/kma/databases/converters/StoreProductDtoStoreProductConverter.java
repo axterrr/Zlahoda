@@ -10,14 +10,16 @@ public class StoreProductDtoStoreProductConverter {
 
     public static StoreProduct toStoreProduct(StoreProductDto storeProductDto) {
         StoreProduct.Builder builder = new StoreProduct.Builder()
-                .setUPC(storeProductDto.getUPC())
+                .setUPC(storeProductDto.getUpc())
                 .setProm(storeProductDto.getProm())
                 .setProduct(storeProductDto.getProduct())
                 .setPrice(new BigDecimal(storeProductDto.getPrice()))
                 .setAmount(Long.parseLong(storeProductDto.getAmount()))
                 .setPromotional(storeProductDto.isPromotional().equals("true"));
-        if(storeProductDto.getUPC()==null) {
-            builder.setUPC(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 12));
+        if(storeProductDto.getUpc()==null) {
+            String upc = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 12);
+            builder.setUPC(upc);
+            storeProductDto.setUpc(upc);
         }
         return builder.build();
     }

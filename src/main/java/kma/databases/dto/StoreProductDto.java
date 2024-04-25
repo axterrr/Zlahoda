@@ -53,11 +53,11 @@ public class StoreProductDto {
         }
     }
 
-    public String getUPC() {
+    public String getUpc() {
         return UPC;
     }
 
-    public void setUPC(String upc) {
+    public void setUpc(String upc) {
         this.UPC = upc;
     }
 

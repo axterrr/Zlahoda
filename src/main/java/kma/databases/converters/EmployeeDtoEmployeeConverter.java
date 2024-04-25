@@ -30,7 +30,9 @@ public class EmployeeDtoEmployeeConverter {
                 .setZipCode(employeeDto.getZipCode())
                 .setPassword(employeeDto.getPassword());
         if(employeeDto.getId()==null) {
-            builder.setId(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10));
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+            builder.setId(uuid);
+            employeeDto.setId(uuid);
         }
         if(employeeDto.getPatronymic()==null || employeeDto.getPatronymic().isEmpty()) {
             builder.setPatronymic(null);

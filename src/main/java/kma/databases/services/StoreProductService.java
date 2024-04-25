@@ -92,4 +92,22 @@ public class StoreProductService {
             return storeProductDao.getAllOrderByName();
         }
     }
+
+    public Optional<StoreProduct> getPromotionalStoreProductByProductId(Long id) {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getPromByProductId(id);
+        }
+    }
+
+    public Optional<StoreProduct> getNotPromotionalStoreProductByProductId(Long id) {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            return storeProductDao.getNotPromByProductId(id);
+        }
+    }
+
+    public void addPromotionalProduct(String upc, String upcProm) {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            storeProductDao.addPromotionalProduct(upc, upcProm);
+        }
+    }
 }
