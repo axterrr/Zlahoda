@@ -136,7 +136,38 @@
                     <td>${customer.getName()}</td>
                     <td>${customer.getPhoneNumber()}</td>
                     <td>${customer.getPercent()}</td>
-                    <td><a href="${pageContext.request.contextPath}/controller/customerCards/customerInfo?id_customerCard=${customer.getNumber()}">Full Info</a></td>
+                    <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${customer.getNumber()}">
+                        Full Info
+                    </button>
+                        <!-- modal filter -->
+                        <div class="modal fade" id="fullInfoModal${customer.getNumber()}" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span>&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            Customer Card ${customer.getNumber()}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="full-info">
+                                            <h4><b>Surname</b> :  ${customer.getSurname()}</h4>
+                                            <h4><b>Name</b> :  ${customer.getName()}</h4>
+                                            <h4><b>Patronymic</b> :  ${customer.getPatronymic()}</h4>
+                                            <h4><b>Phone Number</b> :  ${customer.getPhoneNumber()}</h4>
+                                            <h4><b>City</b> :  ${customer.getCity()}</h4>
+                                            <h4><b>Street</b> :  ${customer.getStreet()}</h4>
+                                            <h4><b>ZipCode</b> :  ${customer.getZipCode()}</h4>
+                                            <h4><b>Percent</b> :  ${customer.getPercent()}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <td><a href="${pageContext.request.contextPath}/controller/customerCards/updateCustomerCard?id_customerCard=${customer.getNumber()}">Update</a></td>
                     <td><a href="${pageContext.request.contextPath}/controller/customerCards/deleteCustomerCard?id_customerCard=${customer.getNumber()}">Delete</a></td>
                 </tr>

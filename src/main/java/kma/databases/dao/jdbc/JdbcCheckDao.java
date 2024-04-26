@@ -5,7 +5,9 @@ import kma.databases.entities.Check;
 import kma.databases.entities.Sale;
 import kma.databases.exceptions.ServerException;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +38,67 @@ public class JdbcCheckDao implements CheckDao {
     private static String UPDATE = "UPDATE `check` SET " +
             "id_employee=?, card_number=?, print_date=?, sum_total=?, vat=? WHERE check_number=?";
     private static String DELETE = "DELETE FROM `check` WHERE check_number=?";
+    private static String GET_BY_DATE =
+            "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "WHERE print_date BETWEEN ? AND ?" +
+            "ORDER BY print_date";
+    private static String GET_BY_CASHIER_AND_DATE =
+            "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "WHERE id_employee=?" +
+            "AND print_date BETWEEN ? AND ?" +
+            "ORDER BY print_date";
+    private static String GET_TOTAL_SUM_BY_DATE =
+            "SELECT SUM(sum_total) AS result " +
+            "FROM `check` " +
+            "WHERE print_date BETWEEN ? AND ?";
+    private static String GET_TOTAL_SUM_BY_CASHIER_AND_DATE =
+            "SELECT SUM(sum_total) AS result " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "WHERE id_employee=? " +
+            "AND print_date BETWEEN ? AND ?";
+    private static String GET_TOTAL_PRODUCT_AMOUNT_BY_DATE =
+            "SELECT SUM(sale.product_number) AS result " +
+            "FROM `check` " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "WHERE id_product=? " +
+            "AND print_date BETWEEN ? AND ?";
+    private static String GET_BY_CASHIER =
+            "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "WHERE id_employee=?" +
+            "ORDER BY print_date";
+    private static String GET_BY_NUMBER = "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "WHERE LOWER(check_number) LIKE CONCAT('%', LOWER(?), '%')";
 
     private static String NUMBER = "check_number";
     private static String EMPLOYEE_ID = "id_employee";
@@ -127,6 +190,114 @@ public class JdbcCheckDao implements CheckDao {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    @Override
+    public List<Check> getByDate(LocalDate fromDate, LocalDate toDate) {
+        List<Check> checks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_DATE,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            query.setDate(1, Date.valueOf(fromDate));
+            query.setDate(2, Date.valueOf(toDate));
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return checks;
+    }
+
+    @Override
+    public List<Check> getByCashierAndDate(String cashierId, LocalDate fromDate, LocalDate toDate) {
+        List<Check> checks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_CASHIER_AND_DATE,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            query.setString(1, cashierId);
+            query.setDate(2, Date.valueOf(fromDate));
+            query.setDate(3, Date.valueOf(toDate));
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return checks;
+    }
+
+    @Override
+    public BigDecimal getTotalSumByDate(LocalDate fromDate, LocalDate toDate) {
+        try (PreparedStatement query = connection.prepareStatement(GET_TOTAL_SUM_BY_DATE)) {
+            query.setDate(1, Date.valueOf(fromDate));
+            query.setDate(2, Date.valueOf(toDate));
+            ResultSet resultSet = query.executeQuery();
+            resultSet.next();
+            return resultSet.getBigDecimal("result");
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    @Override
+    public BigDecimal getTotalSumByCashierAndDate(String cashierId, LocalDate fromDate, LocalDate toDate) {
+        try (PreparedStatement query = connection.prepareStatement(GET_TOTAL_SUM_BY_CASHIER_AND_DATE)) {
+            query.setString(1, cashierId);
+            query.setDate(2, Date.valueOf(fromDate));
+            query.setDate(3, Date.valueOf(toDate));
+            ResultSet resultSet = query.executeQuery();
+            resultSet.next();
+            return resultSet.getBigDecimal("result");
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    @Override
+    public Long getTotalProductAmountByDate(Long productId, LocalDate fromDate, LocalDate toDate) {
+        try (PreparedStatement query = connection.prepareStatement(GET_TOTAL_PRODUCT_AMOUNT_BY_DATE)) {
+            query.setLong(1, productId);
+            query.setDate(2, Date.valueOf(fromDate));
+            query.setDate(3, Date.valueOf(toDate));
+            ResultSet resultSet = query.executeQuery();
+            resultSet.next();
+            return resultSet.getLong("result");
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    @Override
+    public List<Check> getAllByCashier(String cashierId) {
+        List<Check> checks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_CASHIER,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            query.setString(1, cashierId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return checks;
+    }
+
+    @Override
+    public List<Check> getByNumber(String checkNumber) {
+        List<Check> checks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_NUMBER,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            query.setString(1, checkNumber);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return checks;
     }
 
     @Override

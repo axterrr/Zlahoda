@@ -30,7 +30,7 @@ public class AllEmployeesCommand implements Command {
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
 
         Employee loggedInUser = SessionManager.getInstance().getUserFromSession(httpWrapper.getRequest().getSession());
-        List<Employee> empls = new ArrayList<>();
+        List<Employee> empls;
 
         empls = employeeService.getAllEmployees();
 

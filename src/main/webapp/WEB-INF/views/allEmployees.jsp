@@ -141,7 +141,40 @@
                     <td>${employee.getRole()}</td>
                     <td>${employee.getPhoneNumber()}</td>
                     <td>${employee.getCity()}</td>
-                    <td><a href="${pageContext.request.contextPath}/controller/employees/employeeInfo?id_employee=${employee.getId()}">Full Info</a></td>
+                    <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${employee.getId()}">
+                        Full Info
+                    </button>
+                        <!-- modal filter -->
+                        <div class="modal fade" id="fullInfoModal${employee.getId()}" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span>&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            Employee ${employee.getId()}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="full-info">
+                                            <h4><b>Surname</b> :  ${employee.getSurname()}</h4>
+                                            <h4><b>Name</b> :  ${employee.getName()}</h4>
+                                            <h4><b>Patronymic</b> :  ${employee.getPatronymic()}</h4>
+                                            <h4><b>Role</b> :  ${employee.getRole()}</h4>
+                                            <h4><b>Salary</b> :  ${employee.getSalary()}</h4>
+                                            <h4><b>Date of Birth</b> :  ${employee.getDateOfBirthString()}</h4>
+                                            <h4><b>Date of Start</b> :  ${employee.getDateOfStartString()}</h4>
+                                            <h4><b>City</b> :  ${employee.getCity()}</h4>
+                                            <h4><b>Street</b> :  ${employee.getStreet()}</h4>
+                                            <h4><b>ZipCode</b> :  ${employee.getZipCode()}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <td><a href="${pageContext.request.contextPath}/controller/employees/updateEmployee?id_employee=${employee.getId()}">Update</a></td>
                     <td><a href="${pageContext.request.contextPath}/controller/employees/deleteEmployee?id_employee=${employee.getId()}">Delete</a></td>
                 </tr>

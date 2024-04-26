@@ -30,6 +30,10 @@ enum CommandEnum {
     GET_ADD_CHECK ("GET:checks/addCheck", new GetAddCheckCommand(StoreProductService.getInstance())),
     POST_ADD_CHECK ("POST:checks/addCheck", new PostAddCheckCommand()),
     DELETE_CHECK ("GET:checks/deleteCheck", new DeleteCheckCommand(CheckService.getInstance())),
+    SEARCH_CHECK_BY_CASHIER_AND_DATE ("POST:checks/search", new SearchChecksByCashierPerPeriodCommand(CheckService.getInstance())),
+    COUNT_TOTAL_SUM_BY_CASHIER_AND_DATE ("POST:checks/sum", new CountTotalSumByCashierPerPeriodCommand(CheckService.getInstance())),
+    COUNT_TOTAL_SOLD_PRODUCT_AMOUNT_BY_DATE ("POST:checks/amount", new CountTotalSoldProductPerPeriodCommand(CheckService.getInstance())),
+    SEARCH_CHECK_BY_NUMBER ("POST:checks/number", new SearchChecksByNumberCommand(CheckService.getInstance())),
 
     ALL_CUSTOMER_CARDS ("GET:customerCards", new AllCustomerCardsCommand(CustomerCardService.getInstance())),
     GET_ADD_CUSTOMER_CARD ("GET:customerCards/addCustomerCard", new GetAddCustomerCardCommand()),
@@ -47,7 +51,7 @@ enum CommandEnum {
     POST_UPDATE_EMPLOYEE ("POST:employees/updateEmployee", new PostUpdateEmployeeCommand(EmployeeService.getInstance())),
     DELETE_EMPLOYEE ("GET:employees/deleteEmployee", new DeleteEmployeeCommand(EmployeeService.getInstance())),
     ALL_EMPLOYEES_BY_ROLE ("POST:employees/role", new AllEmployeesByRoleCommand(EmployeeService.getInstance())),
-    SEARCH_BY_SURNAME ("POST:employees/surname", new SearchEmployeeBySurnameCommand(EmployeeService.getInstance())),
+    SEARCH_EMPLOYEE_BY_SURNAME("POST:employees/surname", new SearchEmployeeBySurnameCommand(EmployeeService.getInstance())),
 
     ALL_PRODUCTS ("GET:products", new AllProductsCommand(ProductService.getInstance(), CategoryService.getInstance())),
     GET_ADD_PRODUCT ("GET:products/addProduct", new GetAddProductCommand(CategoryService.getInstance())),
