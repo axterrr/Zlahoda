@@ -110,4 +110,10 @@ public class StoreProductService {
             storeProductDao.addPromotionalProduct(upc, upcProm);
         }
     }
+
+    public void updateStoreProductAmount(String upc, Long newAmount) {
+        try (StoreProductDao storeProductDao = daoFactory.createStoreProductDao()) {
+            storeProductDao.updateAmount(upc, newAmount);
+        }
+    }
 }

@@ -16,7 +16,7 @@ public final class Attribute {
     public static final String NAME = "name";
 
     public static final String CUSTOMER_CARDS = "customerCards";
-    public static final String CUSTOMER_CARD = "customerCards";
+    public static final String CUSTOMER_CARD = "customerCard";
     public static final String ID_CUSTOMER_CARD = "id_customerCard";
     public static final String CUSTOMER_CARD_DTO = "customerCardDto";
     public static final String SURNAME = "surname";
@@ -65,6 +65,8 @@ public final class Attribute {
     public static final String DATE_TO = "dateTo";
     public static final String TOTAL_SUM = "totalSum";
     public static final String TOTAL_AMOUNT = "totalAmount";
+    public static final String STORE_PRODUCTS_ARRAY = "storeProducts[]";
+    public static final String AMOUNT_ARRAY = "amount[]";
 
     public static final String SALES = "sales";
     public static final String SALE = "sale";

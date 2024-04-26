@@ -21,5 +21,6 @@ public interface StoreProductDao extends GenericDao<StoreProduct, String>, AutoC
     Optional<StoreProduct> getPromByProductId(Long id);
     Optional<StoreProduct> getNotPromByProductId(Long id);
     void addPromotionalProduct(String upc, String upcProm);
+    void updateAmount(String productId, Long newAmount);
     void close();
 }

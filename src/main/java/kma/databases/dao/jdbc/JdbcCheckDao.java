@@ -18,16 +18,16 @@ public class JdbcCheckDao implements CheckDao {
             "SELECT * " +
             "FROM `check` " +
             "JOIN `employee` USING (id_employee) " +
-            "JOIN `customer_card` USING (card_number) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
             "JOIN `sale` USING (check_number) " +
             "JOIN `store_product` USING (UPC) " +
             "JOIN `product` USING (id_product) " +
             "JOIN `category` USING (category_number) " +
-            "ORDER BY print_date";
+            "ORDER BY check_number";
     private static String GET_BY_ID = "SELECT * " +
             "FROM `check` " +
             "JOIN `employee` USING (id_employee) " +
-            "JOIN `customer_card` USING (card_number) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
             "JOIN `sale` USING (check_number) " +
             "JOIN `store_product` USING (UPC) " +
             "JOIN `product` USING (id_product) " +
@@ -42,25 +42,25 @@ public class JdbcCheckDao implements CheckDao {
             "SELECT * " +
             "FROM `check` " +
             "JOIN `employee` USING (id_employee) " +
-            "JOIN `customer_card` USING (card_number) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
             "JOIN `sale` USING (check_number) " +
             "JOIN `store_product` USING (UPC) " +
             "JOIN `product` USING (id_product) " +
             "JOIN `category` USING (category_number) " +
             "WHERE print_date BETWEEN ? AND ?" +
-            "ORDER BY print_date";
+            "ORDER BY check_number";
     private static String GET_BY_CASHIER_AND_DATE =
             "SELECT * " +
             "FROM `check` " +
             "JOIN `employee` USING (id_employee) " +
-            "JOIN `customer_card` USING (card_number) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
             "JOIN `sale` USING (check_number) " +
             "JOIN `store_product` USING (UPC) " +
             "JOIN `product` USING (id_product) " +
             "JOIN `category` USING (category_number) " +
             "WHERE id_employee=?" +
             "AND print_date BETWEEN ? AND ?" +
-            "ORDER BY print_date";
+            "ORDER BY check_number";
     private static String GET_TOTAL_SUM_BY_DATE =
             "SELECT SUM(sum_total) AS result " +
             "FROM `check` " +
@@ -83,22 +83,23 @@ public class JdbcCheckDao implements CheckDao {
             "SELECT * " +
             "FROM `check` " +
             "JOIN `employee` USING (id_employee) " +
-            "JOIN `customer_card` USING (card_number) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
             "JOIN `sale` USING (check_number) " +
             "JOIN `store_product` USING (UPC) " +
             "JOIN `product` USING (id_product) " +
             "JOIN `category` USING (category_number) " +
-            "WHERE id_employee=?" +
-            "ORDER BY print_date";
+            "WHERE id_employee=? " +
+            "ORDER BY check_number";
     private static String GET_BY_NUMBER = "SELECT * " +
             "FROM `check` " +
             "JOIN `employee` USING (id_employee) " +
-            "JOIN `customer_card` USING (card_number) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
             "JOIN `sale` USING (check_number) " +
             "JOIN `store_product` USING (UPC) " +
             "JOIN `product` USING (id_product) " +
             "JOIN `category` USING (category_number) " +
-            "WHERE LOWER(check_number) LIKE CONCAT('%', LOWER(?), '%')";
+            "WHERE LOWER(check_number) LIKE CONCAT('%', LOWER(?), '%') " +
+            "ORDER BY check_number";
 
     private static String NUMBER = "check_number";
     private static String EMPLOYEE_ID = "id_employee";

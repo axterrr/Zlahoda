@@ -47,6 +47,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
             "JOIN `category` USING (category_number)) LEFT JOIN `store_product` SP2 ON SP1.UPC_prom = SP2.UPC " +
             "WHERE NOT SP1.promotional_product AND SP1.id_product=?";
     private static String ADD_PROMOTIONAL = "UPDATE `store_product` SET UPC_prom=? WHERE UPC=?";
+    private static String UPDATE_AMOUNT = "UPDATE `store_product` SET products_number=? WHERE UPC=?";
 
     private static String SP1 = "SP1.";
     private static String SP2 = "SP2.";
@@ -256,6 +257,17 @@ public class JdbcStoreProductDao implements StoreProductDao {
         try (PreparedStatement query = connection.prepareStatement(ADD_PROMOTIONAL)) {
             query.setString(1, upcProm);
             query.setString(2, upc);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    @Override
+    public void updateAmount(String productId, Long newAmount) {
+        try (PreparedStatement query = connection.prepareStatement(UPDATE_AMOUNT)) {
+            query.setLong(1, newAmount);
+            query.setString(2, productId);
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);

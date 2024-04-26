@@ -1,6 +1,6 @@
 package kma.databases.services;
 
-import kma.databases.converters.CheckDtoСheckConverter;
+import kma.databases.converters.CheckDtoCheckConverter;
 import kma.databases.dao.CheckDao;
 import kma.databases.dao.DaoFactory;
 import kma.databases.dto.CheckDto;
@@ -40,14 +40,14 @@ public class CheckService {
     }
 
     public void createCheck(CheckDto checkDto) {
-        Check check = CheckDtoСheckConverter.toCheck(checkDto);
+        Check check = CheckDtoCheckConverter.toCheck(checkDto);
         try (CheckDao checkDao = daoFactory.createCheckDao()) {
             checkDao.create(check);
         }
     }
 
     public void updateCheck(CheckDto checkDto) {
-        Check check = CheckDtoСheckConverter.toCheck(checkDto);
+        Check check = CheckDtoCheckConverter.toCheck(checkDto);
         try (CheckDao checkDao = daoFactory.createCheckDao()) {
             checkDao.update(check);
         }

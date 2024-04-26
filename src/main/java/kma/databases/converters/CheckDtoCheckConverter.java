@@ -2,12 +2,13 @@ package kma.databases.converters;
 
 import kma.databases.dto.CheckDto;
 import kma.databases.entities.Check;
+import kma.databases.entities.CustomerCard;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class CheckDtoСheckConverter {
+public class CheckDtoCheckConverter {
 
     public static Check toCheck(CheckDto checkDto) {
         Check.Builder builder = new Check.Builder()
@@ -23,8 +24,9 @@ public class CheckDtoСheckConverter {
             builder.setNumber(uuid);
             checkDto.setNumber(uuid);
         }
-        if(checkDto.getCustomerCard() == null || checkDto.getCustomerCard().getNumber() == null) {
-            builder.setCustomerCard(null);
+        if(checkDto.getCustomerCard() == null || checkDto.getCustomerCard().getNumber() == null
+            || checkDto.getCustomerCard().getNumber().isEmpty()) {
+            builder.setCustomerCard(new CustomerCard.Builder().setNumber(null).build());
         }
         return builder.build();
     }

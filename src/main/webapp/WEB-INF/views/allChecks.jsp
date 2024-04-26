@@ -91,7 +91,7 @@
                             action="${pageContext.request.contextPath}/controller/checks/search"
                             method="POST" role="form">
                         <div class="form-group">
-                            <label for="employee">Employee</label>
+                            <label for="employee">Cashier</label>
                             <select class="form-control" id="employee" name="employee">
                                 <option value="">All Employees</option>
                                 <c:forEach items="${employees}" var="employee">
@@ -133,7 +133,7 @@
                             action="${pageContext.request.contextPath}/controller/checks/sum"
                             method="POST" role="form">
                         <div class="form-group">
-                            <label for="check-employee">Employee</label>
+                            <label for="check-employee">Cashier</label>
                             <select class="form-control" id="check-employee" name="employee">
                                 <option value="">All Employees</option>
                                 <c:forEach items="${employees}" var="empl">
@@ -277,7 +277,7 @@
                             </div>
                         </div>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/controller/checks/checkInfo?check_id=${check.getNumber()}">Delete</a></td>
+                    <td><a href="${pageContext.request.contextPath}/controller/checks/deleteCheck?id_check=${check.getNumber()}">Delete</a></td>
                 </tr>
             </c:forEach>
             </tbody>
