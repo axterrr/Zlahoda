@@ -16,6 +16,7 @@ import kma.databases.entities.CustomerCard;
 import kma.databases.entities.Sale;
 import kma.databases.entities.StoreProduct;
 import kma.databases.services.CheckService;
+import kma.databases.services.CustomerCardService;
 import kma.databases.services.SaleService;
 import kma.databases.services.StoreProductService;
 import kma.databases.validators.entities.CheckDtoValidator;
@@ -32,8 +33,16 @@ public class PostAddCheckCommand implements Command {
     @Override
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
 
+        List<String> errors = new ArrayList<>();
+        if(httpWrapper.getRequest().getParameterValues(Attribute.STORE_PRODUCTS_ARRAY) == null
+            || httpWrapper.getRequest().getParameterValues(Attribute.AMOUNT_ARRAY) == null) {
+                errors.add("Choose some products!");
+                addRequestAttributes(httpWrapper.getRequest(), errors);
+                return Page.ADD_UPDATE_CHECK_VIEW;
+        }
+
         CheckDto checkDto = getUserInput(httpWrapper.getRequest());
-        List<String> errors = CheckDtoValidator.getInstance().validate(checkDto);
+        errors = CheckDtoValidator.getInstance().validate(checkDto);
 
         if (errors.isEmpty()) {
             CheckService.getInstance().createCheck(checkDto);
@@ -56,7 +65,7 @@ public class PostAddCheckCommand implements Command {
         }
 
         addRequestAttributes(httpWrapper.getRequest(), errors);
-        return Page.ADD_UPDATE_CUSTOMER_CARD_VIEW;
+        return Page.ADD_UPDATE_CHECK_VIEW;
     }
 
     private CheckDto getUserInput(HttpServletRequest request) {
@@ -101,6 +110,8 @@ public class PostAddCheckCommand implements Command {
     }
 
     private void addRequestAttributes(HttpServletRequest request, List<String> errors) {
+        request.setAttribute(Attribute.CUSTOMER_CARDS, CustomerCardService.getInstance().getAllCustomerCards());
+        request.setAttribute(Attribute.STORE_PRODUCTS, StoreProductService.getInstance().getAllStoreProducts());
         request.setAttribute(Attribute.ERRORS, errors);
     }
 }

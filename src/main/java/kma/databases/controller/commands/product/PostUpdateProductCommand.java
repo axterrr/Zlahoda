@@ -8,6 +8,7 @@ import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.controller.utils.RedirectionManager;
 import kma.databases.dto.ProductDto;
 import kma.databases.entities.Category;
+import kma.databases.services.CategoryService;
 import kma.databases.services.ProductService;
 import kma.databases.validators.entities.ProductDtoValidator;
 
@@ -57,6 +58,7 @@ public class PostUpdateProductCommand implements Command {
     }
 
     private void addRequestAttributes(HttpServletRequest request, ProductDto productDto, List<String> errors) {
+        request.setAttribute(Attribute.CATEGORIES, CategoryService.getInstance().getAllCategories());
         request.setAttribute(Attribute.PRODUCT_DTO, productDto);
         request.setAttribute(Attribute.ERRORS, errors);
     }

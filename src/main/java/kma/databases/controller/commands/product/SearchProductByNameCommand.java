@@ -64,7 +64,7 @@ public class SearchProductByNameCommand implements Command {
     private List<String> validateUserInput(String name) {
         List<String> errors = new ArrayList<>();
         AbstractFieldValidatorHandler fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
-        fieldValidator.validateField(FieldValidatorKey.NAME_SURNAME, name, errors);
+        fieldValidator.validateField(FieldValidatorKey.PRODUCT_CATEGORY_NAME, name, errors);
         return errors;
     }
 }

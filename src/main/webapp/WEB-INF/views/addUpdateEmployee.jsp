@@ -70,7 +70,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="salary">Salary</label> <input type="number" class="form-control"
+                        <label for="salary">Salary</label> <input type="number" step="0.0001" class="form-control"
                                                                       id="salary" name="salary"
                                                                       placeholder="Salary"
                                                                       value="<c:out value="${requestScope.employeeDto.getSalary()}" />" />
@@ -80,12 +80,6 @@
                                                                   id="birthdate" name="dateOfBirth"
                                                                   placeholder="Date of Birth"
                                                                             value="<c:out value="${requestScope.employeeDto.getDateOfBirthString()}" />" />
-                    </div>
-                    <div class="form-group">
-                        <label for="startdate">Date of Start</label> <input type="date" class="form-control"
-                                                                            id="startdate" name="dateOfStart"
-                                                                            placeholder="Date of Start"
-                                                                            value="<c:out value="${requestScope.employeeDto.getDateOfStartString()}" />" />
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label> <input type="text" class="form-control"

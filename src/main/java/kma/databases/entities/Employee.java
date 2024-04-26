@@ -152,7 +152,7 @@ public class Employee {
     }
 
     public String getDateOfBirthString() {
-        return dateOfStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return dateOfBirth.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public LocalDateTime getDateOfStart() {

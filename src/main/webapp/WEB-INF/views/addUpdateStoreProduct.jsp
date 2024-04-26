@@ -54,7 +54,7 @@
                         </c:choose>
                     </div>
                     <div class="form-group">
-                        <label for="price">Price</label> <input type="number" class="form-control"
+                        <label for="price">Price</label> <input type="number" step="0.0001" class="form-control"
                                                               id="price" name="price"
                                                               placeholder="Price"
                                                               value="<c:out value="${requestScope.storeProductDto.getPrice()}" />" />

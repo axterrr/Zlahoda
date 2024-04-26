@@ -151,12 +151,18 @@ public class EmployeeDto {
     public String getDateOfBirth() {
         return dateOfBirth;
     }
+    public String getDateOfBirthString() {
+        return dateOfBirth;
+    }
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
     public String getDateOfStart() {
+        return dateOfStart;
+    }
+    public String getDateOfStartString() {
         return dateOfStart;
     }
 

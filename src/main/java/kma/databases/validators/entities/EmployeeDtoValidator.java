@@ -28,7 +28,6 @@ public class EmployeeDtoValidator implements Validator<EmployeeDto> {
         fieldValidator.validateField(FieldValidatorKey.PATRONYMIC, employeeDto.getPatronymic(), errors);
         fieldValidator.validateField(FieldValidatorKey.CURRENCY, employeeDto.getSalary(), errors);
         fieldValidator.validateField(FieldValidatorKey.DATE_OF_BIRTH, employeeDto.getDateOfBirth(), errors);
-        fieldValidator.validateField(FieldValidatorKey.DATE_OF_START, employeeDto.getDateOfStart(), errors);
         fieldValidator.validateField(FieldValidatorKey.PHONE, employeeDto.getPhoneNumber(), errors);
         fieldValidator.validateField(FieldValidatorKey.CITY, employeeDto.getCity(), errors);
         fieldValidator.validateField(FieldValidatorKey.STREET, employeeDto.getStreet(), errors);
