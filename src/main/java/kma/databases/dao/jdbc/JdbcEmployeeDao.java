@@ -203,13 +203,19 @@ public class JdbcEmployeeDao implements EmployeeDao {
     }
 
     protected static Employee extractEmployeeFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Employee.Builder().setId(resultSet.getString(ID)).setSurname(resultSet.getString(SURNAME))
-                .setName(resultSet.getString(NAME)).setPatronymic(resultSet.getString(PARTONYMIC))
-                .setRole(Role.getRole(resultSet.getString(ROLE))).setSalary(resultSet.getBigDecimal(SALARY))
+        return new Employee.Builder()
+                .setId(resultSet.getString(ID))
+                .setSurname(resultSet.getString(SURNAME))
+                .setName(resultSet.getString(NAME))
+                .setPatronymic(resultSet.getString(PARTONYMIC))
+                .setRole(Role.getRole(resultSet.getString(ROLE)))
+                .setSalary(resultSet.getBigDecimal(SALARY))
                 .setDateOfBirth(resultSet.getTimestamp(DATE_OF_BIRTH).toLocalDateTime())
                 .setDateOfStart(resultSet.getTimestamp(DATE_OF_START).toLocalDateTime())
-                .setPhoneNumber(resultSet.getString(PHONE_NUMBER)).setCity(resultSet.getString(CITY))
-                .setStreet(resultSet.getString(STREET)).setZipCode(resultSet.getString(ZIP_CODE))
+                .setPhoneNumber(resultSet.getString(PHONE_NUMBER))
+                .setCity(resultSet.getString(CITY))
+                .setStreet(resultSet.getString(STREET))
+                .setZipCode(resultSet.getString(ZIP_CODE))
                 .setPassword(resultSet.getString(PASSWORD)).build();
     }
 

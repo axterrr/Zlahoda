@@ -2,6 +2,7 @@ package kma.databases.dao.jdbc;
 
 import kma.databases.dao.CheckDao;
 import kma.databases.entities.Check;
+import kma.databases.entities.Sale;
 import kma.databases.exceptions.ServerException;
 
 import java.sql.*;
@@ -11,10 +12,25 @@ import java.util.Optional;
 
 public class JdbcCheckDao implements CheckDao {
 
-    private static String GET_ALL = "SELECT * FROM `check` JOIN `employee` USING (id_employee) JOIN " +
-            "`customer_card` USING (card_number) ORDER BY print_date";
-    private static String GET_BY_ID = "SELECT * FROM `check` JOIN `employee` USING (id_employee) JOIN " +
-            "`customer_card` USING (card_number) WHERE check_number=?";
+    private static String GET_ALL =
+            "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "ORDER BY print_date";
+    private static String GET_BY_ID = "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "WHERE check_number=?";
     private static String CREATE = "INSERT INTO `check` " +
             "(check_number, id_employee, card_number, print_date, sum_total, vat) VALUES (?, ?, ?, ?, ?, ?)";
     private static String UPDATE = "UPDATE `check` SET " +
@@ -27,6 +43,8 @@ public class JdbcCheckDao implements CheckDao {
     private static String PRINT_DATE = "print_date";
     private static String SUM_TOTAL = "sum_total";
     private static String VAT = "vat";
+    private static String PRICE = "sale.selling_price";
+    private static String AMOUNT = "sale.product_number";
 
     private Connection connection;
     private boolean connectionShouldBeClosed;
@@ -44,9 +62,10 @@ public class JdbcCheckDao implements CheckDao {
     @Override
     public List<Check> getAll() {
         List<Check> checks = new ArrayList<>();
-        try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL)) {
+        try (Statement query = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = query.executeQuery(GET_ALL)) {
             while (resultSet.next()) {
-                checks.add(extractCheckFromResultSet(resultSet));
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -57,11 +76,12 @@ public class JdbcCheckDao implements CheckDao {
     @Override
     public Optional<Check> getById(String id) {
         Optional<Check> check = Optional.empty();
-        try (PreparedStatement query = connection.prepareStatement(GET_BY_ID)) {
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_ID,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             query.setString(1, id);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                check = Optional.of(extractCheckFromResultSet(resultSet));
+                check = Optional.of(extractCheckWithSalesFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -120,9 +140,30 @@ public class JdbcCheckDao implements CheckDao {
         }
     }
 
+    protected static Check extractCheckWithSalesFromResultSet(ResultSet resultSet) throws SQLException {
+        Check check = extractCheckFromResultSet(resultSet);
+        check.addSale(extractSaleFromResultSet(resultSet));
+        while (resultSet.next() && check.getNumber().equals(resultSet.getString(NUMBER))) {
+            check.addSale(extractSaleFromResultSet(resultSet));
+        }
+        resultSet.previous();
+        return check;
+    }
+
+    protected static Sale extractSaleFromResultSet(ResultSet resultSet) throws SQLException {
+        return new Sale.Builder()
+                .setPrice(resultSet.getBigDecimal(PRICE))
+                .setProductsNumber(resultSet.getLong(AMOUNT))
+                .setStoreProduct(JdbcStoreProductDao.extractStoreProductFromResultSet(resultSet))
+                .build();
+    }
+
     protected static Check extractCheckFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Check.Builder().setNumber(resultSet.getString(NUMBER)).setTotalSum(resultSet.getBigDecimal(SUM_TOTAL))
-                .setVat(resultSet.getBigDecimal(VAT)).setPrintDate(resultSet.getTimestamp(PRINT_DATE).toLocalDateTime())
+        return new Check.Builder()
+                .setNumber(resultSet.getString(NUMBER))
+                .setTotalSum(resultSet.getBigDecimal(SUM_TOTAL))
+                .setVat(resultSet.getBigDecimal(VAT))
+                .setPrintDate(resultSet.getTimestamp(PRINT_DATE).toLocalDateTime())
                 .setEmployee(JdbcEmployeeDao.extractEmployeeFromResultSet(resultSet))
                 .setCustomerCard(JdbcCustomerCardDao.extractCustomerCardFromResultSet(resultSet))
                 .build();

@@ -117,4 +117,10 @@ public class Check {
         this.sales = new ArrayList<>();
         this.sales.addAll(sales);
     }
+
+    public void addSale(Sale sale) {
+        if(sales==null)
+            sales = new ArrayList<>();
+        this.sales.add(sale);
+    }
 }

@@ -164,10 +164,16 @@ public class JdbcCustomerCardDao implements CustomerCardDao {
     }
 
     protected static CustomerCard extractCustomerCardFromResultSet(ResultSet resultSet) throws SQLException {
-        return new CustomerCard.Builder().setNumber(resultSet.getString(NUMBER)).setSurname(resultSet.getString(SURNAME))
-                .setName(resultSet.getString(NAME)).setPatronymic(resultSet.getString(PARTONYMIC))
-                .setPhoneNumber(resultSet.getString(PHONE_NUMBER)).setCity(resultSet.getString(CITY))
-                .setStreet(resultSet.getString(STREET)).setZipCode(resultSet.getString(ZIP_CODE))
-                .setPercent(resultSet.getLong(PERCENT)).build();
+        return new CustomerCard.Builder()
+                .setNumber(resultSet.getString(NUMBER))
+                .setSurname(resultSet.getString(SURNAME))
+                .setName(resultSet.getString(NAME))
+                .setPatronymic(resultSet.getString(PARTONYMIC))
+                .setPhoneNumber(resultSet.getString(PHONE_NUMBER))
+                .setCity(resultSet.getString(CITY))
+                .setStreet(resultSet.getString(STREET))
+                .setZipCode(resultSet.getString(ZIP_CODE))
+                .setPercent(resultSet.getLong(PERCENT))
+                .build();
     }
 }

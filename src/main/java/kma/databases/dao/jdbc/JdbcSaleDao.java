@@ -117,8 +117,8 @@ public class JdbcSaleDao implements SaleDao {
         return new Sale.Builder()
                 .setPrice(resultSet.getBigDecimal(PRICE))
                 .setProductsNumber(resultSet.getLong(PRODUCTS_NUMBER))
-                .setStoreProduct(JdbcStoreProductDao.extractStoreProductFromResultSet(resultSet))
-                .setCheck(JdbcCheckDao.extractCheckFromResultSet(resultSet))
+                .setStoreProduct(JdbcStoreProductDao.extractStoreProductWithPromotionalFromResultSet(resultSet))
+                .setCheck(JdbcCheckDao.extractCheckWithSalesFromResultSet(resultSet))
                 .build();
     }
 

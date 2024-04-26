@@ -151,8 +151,8 @@
             <c:forEach items="${checks}" var="check">
                 <tr>
                     <td>${check.getNumber()}</td>
-                    <td>${check.getEmployeeId()}</td>
-                    <td>${check.getCustomerCardNumber()}</td>
+                    <td>${check.getEmployee().getSurname()}</td>
+                    <td>${check.getCustomerCard().getSurname()}</td>
                     <td>${check.getPrintDate()}</td>
                     <td>${check.getTotalSum()}</td>
                     <td>${check.getVat()}</td>

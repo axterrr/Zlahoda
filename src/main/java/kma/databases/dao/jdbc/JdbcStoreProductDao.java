@@ -1,7 +1,6 @@
 package kma.databases.dao.jdbc;
 
 import kma.databases.dao.StoreProductDao;
-import kma.databases.entities.Product;
 import kma.databases.entities.StoreProduct;
 import kma.databases.exceptions.ServerException;
 
@@ -76,7 +75,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
         List<StoreProduct> products = new ArrayList<>();
         try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL)) {
             while (resultSet.next()) {
-                products.add(extractStoreProductFromResultSet(resultSet));
+                products.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -91,7 +90,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
             query.setString(1, id);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                product = Optional.of(extractStoreProductFromResultSet(resultSet));
+                product = Optional.of(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
 
         } catch (SQLException e) {
@@ -144,7 +143,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
             query.setString(1, upc);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                storeProducts.add(extractStoreProductFromResultSet(resultSet));
+                storeProducts.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -158,7 +157,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
         try (Statement query = connection.createStatement();
              ResultSet resultSet = query.executeQuery(GET_PROMOTIONAL_ORDER_BY_AMOUNT)) {
             while (resultSet.next()) {
-                products.add(extractStoreProductFromResultSet(resultSet));
+                products.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -172,7 +171,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
         try (Statement query = connection.createStatement();
              ResultSet resultSet = query.executeQuery(GET_PROMOTIONAL_ORDER_BY_NAME)) {
             while (resultSet.next()) {
-                products.add(extractStoreProductFromResultSet(resultSet));
+                products.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -186,7 +185,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
         try (Statement query = connection.createStatement();
              ResultSet resultSet = query.executeQuery(GET_NOT_PROMOTIONAL_ORDER_BY_AMOUNT)) {
             while (resultSet.next()) {
-                products.add(extractStoreProductFromResultSet(resultSet));
+                products.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -199,7 +198,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
         List<StoreProduct> products = new ArrayList<>();
         try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_NOT_PROMOTIONAL_ORDER_BY_NAME)) {
             while (resultSet.next()) {
-                products.add(extractStoreProductFromResultSet(resultSet));
+                products.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -212,7 +211,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
         List<StoreProduct> products = new ArrayList<>();
         try (Statement query = connection.createStatement(); ResultSet resultSet = query.executeQuery(GET_ALL_ORDER_BY_NAME)) {
             while (resultSet.next()) {
-                products.add(extractStoreProductFromResultSet(resultSet));
+                products.add(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -227,7 +226,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
             query.setLong(1, id);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                product = Optional.of(extractStoreProductFromResultSet(resultSet));
+                product = Optional.of(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
 
         } catch (SQLException e) {
@@ -243,7 +242,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
             query.setLong(1, id);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
-                product = Optional.of(extractStoreProductFromResultSet(resultSet));
+                product = Optional.of(extractStoreProductWithPromotionalFromResultSet(resultSet));
             }
 
         } catch (SQLException e) {
@@ -276,6 +275,16 @@ public class JdbcStoreProductDao implements StoreProductDao {
 
     protected static StoreProduct extractStoreProductFromResultSet(ResultSet resultSet) throws SQLException {
         return new StoreProduct.Builder()
+                .setUPC(resultSet.getString(UPC))
+                .setPrice(resultSet.getBigDecimal(PRICE))
+                .setAmount(resultSet.getLong(PRODUCTS_NUMBER))
+                .setPromotional(resultSet.getBoolean(PROMOTIONAL_PRODUCT))
+                .setProduct(JdbcProductDao.extractProductFromResultSet(resultSet))
+                .build();
+    }
+
+    protected static StoreProduct extractStoreProductWithPromotionalFromResultSet(ResultSet resultSet) throws SQLException {
+        return new StoreProduct.Builder()
                 .setUPC(resultSet.getString(SP1+UPC))
                 .setPrice(resultSet.getBigDecimal(SP1+PRICE))
                 .setAmount(resultSet.getLong(SP1+PRODUCTS_NUMBER))
@@ -285,7 +294,7 @@ public class JdbcStoreProductDao implements StoreProductDao {
                 .build();
     }
 
-    private static StoreProduct extractPromotionalProductFromResultSet(ResultSet resultSet) throws SQLException {
+    protected static StoreProduct extractPromotionalProductFromResultSet(ResultSet resultSet) throws SQLException {
         return new StoreProduct.Builder()
                 .setUPC(resultSet.getString(SP2+UPC))
                 .setPrice(resultSet.getBigDecimal(SP2+PRICE))
