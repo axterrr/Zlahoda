@@ -23,11 +23,31 @@
                 Search by Percent
             </button>
             <button type="button" class="btn btn-default"
-                    onclick="location.href='${pageContext.request.contextPath}/controller/customerCards/report';">
+                    onclick="printTable()">
                 Report
             </button>
         </div>
     </div>
+    <script>
+        function printTable() {
+            var table = document.getElementById("custTable");
+            if (table) {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                var iframeDoc = iframe.contentWindow.document;
+                iframeDoc.write('<style>body {padding-top: 50px; padding-bottom: 50px; justify-content: stretch;}</style>');
+                iframeDoc.write('<h2 align="center">Customer Cards</h2>');
+                iframeDoc.write(table.outerHTML);
+                iframeDoc.close();
+                iframe.onload = function() {
+                    iframe.contentWindow.print();
+                };
+            } else {
+                alert("Table not found!");
+            }
+        }
+    </script>
 
     <!-- modal searchBySurname -->
     <div class="modal fade" id="searchBySurname" tabindex="-1" role="dialog"
@@ -115,17 +135,21 @@
 
 
     <div class="row-fluid top-margin" align="center">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="custTable">
             <thead>
             <tr>
                 <th>Card Number</th>
                 <th>Surname</th>
                 <th>Name</th>
+                <th class="show-print">Patronymic</th>
                 <th>Phone Number</th>
+                <th class="show-print">City</th>
+                <th class="show-print">Street</th>
+                <th class="show-print">Zip Code</th>
                 <th>Percent</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th class="tdbutton"></th>
+                <th class="tdbutton"></th>
+                <th class="tdbutton"></th>
             </tr>
             </thead>
             <tbody>
@@ -134,13 +158,17 @@
                     <td>${customer.getNumber()}</td>
                     <td>${customer.getSurname()}</td>
                     <td>${customer.getName()}</td>
+                    <td class="show-print">${customer.getPatronymic()}</td>
                     <td>${customer.getPhoneNumber()}</td>
+                    <td class="show-print">${customer.getCity()}</td>
+                    <td class="show-print">${customer.getStreet()}</td>
+                    <td class="show-print">${customer.getZipCode()}</td>
                     <td>${customer.getPercent()}</td>
-                    <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${customer.getNumber()}">
+                    <td class="tdbutton"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${customer.getNumber()}">
                         Full Info
                     </button>
                         <!-- modal filter -->
-                        <div class="modal fade" id="fullInfoModal${customer.getNumber()}" tabindex="-1" role="dialog"
+                        <div class="modal fade tdbutton" id="fullInfoModal${customer.getNumber()}" tabindex="-1" role="dialog"
                              aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -168,10 +196,32 @@
                                 </div>
                             </div>
                         </div>
-                    <td><a href="${pageContext.request.contextPath}/controller/customerCards/updateCustomerCard?id_customerCard=${customer.getNumber()}">Update</a></td>
-                    <td><a href="${pageContext.request.contextPath}/controller/customerCards/deleteCustomerCard?id_customerCard=${customer.getNumber()}">Delete</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/customerCards/updateCustomerCard?id_customerCard=${customer.getNumber()}">Update</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/customerCards/deleteCustomerCard?id_customerCard=${customer.getNumber()}">Delete</a></td>
                 </tr>
             </c:forEach>
+            <style>
+                .show-print {
+                    display: none;
+                }
+                @media print {
+                    .show-print {
+                        display: table-cell;
+                    }
+                    .tdbutton {
+                        display: none !important;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                        width: 100%;
+                    }
+                    td, th {
+                        border: 1px solid black;
+                        padding: 8px;
+                    }
+                }
+            </style>
             </tbody>
         </table>
     </div>

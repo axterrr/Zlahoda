@@ -23,11 +23,32 @@
                 Search by Surname
             </button>
             <button type="button" class="btn btn-default"
-                    onclick="location.href='${pageContext.request.contextPath}/controller/employees/report';">
+                    onclick="printTable()">
                 Report
             </button>
         </div>
     </div>
+
+    <script>
+        function printTable() {
+            var table = document.getElementById("emplTable");
+            if (table) {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                var iframeDoc = iframe.contentWindow.document;
+                iframeDoc.write('<style>body {padding-top: 50px; padding-bottom: 50px; justify-content: stretch;}</style>');
+                iframeDoc.write('<h2 align="center">Employees</h2>');
+                iframeDoc.write(table.outerHTML);
+                iframeDoc.close();
+                iframe.onload = function() {
+                    iframe.contentWindow.print();
+                };
+            } else {
+                alert("Table not found!");
+            }
+        }
+    </script>
 
     <!-- modal searchByRole -->
     <div class="modal fade" id="searchByRole" tabindex="-1"
@@ -118,18 +139,24 @@
 
 
     <div class="row-fluid top-margin" align="center">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="emplTable">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Surname</th>
                 <th>Name</th>
+                <th class="show-print">Patronymic</th>
                 <th>Role</th>
+                <th class="show-print">Salary</th>
+                <th class="show-print">Date of Birth</th>
+                <th class="show-print">Date of Start</th>
                 <th>Phone Number</th>
                 <th>City</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th class="show-print">Street</th>
+                <th class="show-print">Zip Code</th>
+                <th class="tdbutton"></th>
+                <th class="tdbutton"></th>
+                <th class="tdbutton"></th>
             </tr>
             </thead>
             <tbody>
@@ -138,14 +165,20 @@
                     <td>${employee.getId()}</td>
                     <td>${employee.getSurname()}</td>
                     <td>${employee.getName()}</td>
+                    <td class="show-print">${employee.getPatronymic()}</td>
                     <td>${employee.getRole()}</td>
+                    <td class="show-print">${employee.getSalary()}</td>
+                    <td class="show-print">${employee.getDateOfBirthString()}</td>
+                    <td class="show-print">${employee.getDateOfStartString()}</td>
                     <td>${employee.getPhoneNumber()}</td>
                     <td>${employee.getCity()}</td>
-                    <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${employee.getId()}">
+                    <td class="show-print">${employee.getStreet()}</td>
+                    <td class="show-print">${employee.getZipCode()}</td>
+                    <td class="tdbutton"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${employee.getId()}">
                         Full Info
                     </button>
                         <!-- modal filter -->
-                        <div class="modal fade" id="fullInfoModal${employee.getId()}" tabindex="-1" role="dialog"
+                        <div class="modal fade tdbutton" id="fullInfoModal${employee.getId()}" tabindex="-1" role="dialog"
                              aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -175,10 +208,32 @@
                                 </div>
                             </div>
                         </div>
-                    <td><a href="${pageContext.request.contextPath}/controller/employees/updateEmployee?id_employee=${employee.getId()}">Update</a></td>
-                    <td><a href="${pageContext.request.contextPath}/controller/employees/deleteEmployee?id_employee=${employee.getId()}">Delete</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/employees/updateEmployee?id_employee=${employee.getId()}">Update</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/employees/deleteEmployee?id_employee=${employee.getId()}">Delete</a></td>
                 </tr>
             </c:forEach>
+            <style>
+                .show-print {
+                    display: none;
+                }
+                @media print {
+                    .show-print {
+                        display: table-cell;
+                    }
+                    .tdbutton {
+                        display: none !important;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                        width: 100%;
+                    }
+                    td, th {
+                        border: 1px solid black;
+                        padding: 8px;
+                    }
+                }
+            </style>
             </tbody>
         </table>
     </div>

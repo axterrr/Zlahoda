@@ -23,11 +23,32 @@
                 Filter Promotional
             </button>
             <button type="button" class="btn btn-default"
-                    onclick="location.href='${pageContext.request.contextPath}/controller/storeProducts/report';">
+                    onclick="printTable()">
                 Report
             </button>
         </div>
     </div>
+
+    <script>
+        function printTable() {
+            var table = document.getElementById("stprodTable");
+            if (table) {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                var iframeDoc = iframe.contentWindow.document;
+                iframeDoc.write('<style>body {padding-top: 50px; padding-bottom: 50px; justify-content: stretch;}</style>');
+                iframeDoc.write('<h2 align="center">Store Products</h2>');
+                iframeDoc.write(table.outerHTML);
+                iframeDoc.close();
+                iframe.onload = function() {
+                    iframe.contentWindow.print();
+                };
+            } else {
+                alert("Table not found!");
+            }
+        }
+    </script>
 
     <!-- modal searchByUPC -->
     <div class="modal fade" id="searchByUPC" tabindex="-1" role="dialog"
@@ -121,7 +142,7 @@
 
 
     <div class="row-fluid top-margin" align="center">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="stprodTable">
             <thead>
             <tr>
                 <th>UPC</th>
@@ -130,8 +151,8 @@
                 <th>Amount</th>
                 <th>Promotional</th>
                 <th>Promotional UPC</th>
-                <th></th>
-                <th></th>
+                <th class="tdbutton"></th>
+                <th class="tdbutton"></th>
             </tr>
             </thead>
             <tbody>
@@ -149,10 +170,26 @@
                         </c:choose>
                     </td>
                     <td>${storeProduct.getProm().getUpc()}</td>
-                    <td><a href="${pageContext.request.contextPath}/controller/storeProducts/updateStoreProduct?id_storeProduct=${storeProduct.getUpc()}">Update</a></td>
-                    <td><a href="${pageContext.request.contextPath}/controller/storeProducts/deleteStoreProduct?id_storeProduct=${storeProduct.getUpc()}">Delete</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/storeProducts/updateStoreProduct?id_storeProduct=${storeProduct.getUpc()}">Update</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/storeProducts/deleteStoreProduct?id_storeProduct=${storeProduct.getUpc()}">Delete</a></td>
                 </tr>
             </c:forEach>
+            <style>
+                @media print {
+                    .tdbutton {
+                        display: none !important;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                        width: 100%;
+                    }
+                    td, th {
+                        border: 1px solid black;
+                        padding: 8px;
+                    }
+                }
+            </style>
             </tbody>
         </table>
     </div>

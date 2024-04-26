@@ -23,11 +23,32 @@
                 Search by name
             </button>
             <button type="button" class="btn btn-default"
-                    onclick="location.href='${pageContext.request.contextPath}/controller/products/report';">
+                    onclick="printTable()">
                 Report
             </button>
         </div>
     </div>
+
+    <script>
+        function printTable() {
+            var table = document.getElementById("prodTable");
+            if (table) {
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                var iframeDoc = iframe.contentWindow.document;
+                iframeDoc.write('<style>body {padding-top: 50px; padding-bottom: 50px; justify-content: stretch;}</style>');
+                iframeDoc.write('<h2 align="center">Products</h2>');
+                iframeDoc.write(table.outerHTML);
+                iframeDoc.close();
+                iframe.onload = function() {
+                    iframe.contentWindow.print();
+                };
+            } else {
+                alert("Table not found!");
+            }
+        }
+    </script>
 
     <!-- modal searchByCategory -->
     <div class="modal fade" id="searchByCategory" tabindex="-1"
@@ -119,15 +140,15 @@
 
 
     <div class="row-fluid top-margin" align="center">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="prodTable">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>Characteristics</th>
                 <th>Category</th>
-                <th></th>
-                <th></th>
+                <th class="tdbutton"></th>
+                <th class="tdbutton"></th>
             </tr>
             </thead>
             <tbody>
@@ -137,10 +158,26 @@
                     <td>${product.getName()}</td>
                     <td>${product.getCharacteristics()}</td>
                     <td>${product.getCategory().getName()}</td>
-                    <td><a href="${pageContext.request.contextPath}/controller/products/updateProduct?id_product=${product.getId()}">Update</a></td>
-                    <td><a href="${pageContext.request.contextPath}/controller/products/deleteProduct?id_product=${product.getId()}">Delete</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/products/updateProduct?id_product=${product.getId()}">Update</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/products/deleteProduct?id_product=${product.getId()}">Delete</a></td>
                 </tr>
             </c:forEach>
+            <style>
+                @media print {
+                    .tdbutton {
+                        display: none !important;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        border: 1px solid black;
+                        width: 100%;
+                    }
+                    td, th {
+                        border: 1px solid black;
+                        padding: 8px;
+                    }
+                }
+            </style>
             </tbody>
         </table>
     </div>
