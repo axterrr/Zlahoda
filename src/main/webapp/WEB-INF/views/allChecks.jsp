@@ -211,6 +211,13 @@
             </div>
         </c:if>
     </div>
+    <div class="row-fluid" align="center">
+        <c:if test="${not empty requestScope.result}">
+            <div class="alert alert-success">
+                Result: ${requestScope.result}
+            </div>
+        </c:if>
+    </div>
 
 
     <div class="row-fluid top-margin" align="center">

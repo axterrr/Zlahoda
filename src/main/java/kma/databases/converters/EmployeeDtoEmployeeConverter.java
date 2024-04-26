@@ -22,8 +22,7 @@ public class EmployeeDtoEmployeeConverter {
                 .setSalary(new BigDecimal(employeeDto.getSalary()))
                 .setDateOfBirth(LocalDateTime.of(LocalDate.parse(employeeDto.getDateOfBirth(),
                         DateTimeFormatter.ofPattern("yyyy-MM-dd")), LocalTime.MIDNIGHT))
-                .setDateOfStart(LocalDateTime.of(LocalDate.parse(employeeDto.getDateOfBirth(),
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd")), LocalTime.MIDNIGHT))
+                .setDateOfStart(LocalDateTime.now())
                 .setPhoneNumber(employeeDto.getPhoneNumber())
                 .setCity(employeeDto.getCity())
                 .setStreet(employeeDto.getStreet())

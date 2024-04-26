@@ -63,11 +63,7 @@ public final class Attribute {
     public static final String CHECK_DTO = "checkDto";
     public static final String DATE_FROM = "dateFrom";
     public static final String DATE_TO = "dateTo";
-    public static final String TOTAL_SUM = "totalSum";
-    public static final String TOTAL_AMOUNT = "totalAmount";
+    public static final String RESULT = "result";
     public static final String STORE_PRODUCTS_ARRAY = "storeProducts[]";
     public static final String AMOUNT_ARRAY = "amount[]";
-
-    public static final String SALES = "sales";
-    public static final String SALE = "sale";
 }

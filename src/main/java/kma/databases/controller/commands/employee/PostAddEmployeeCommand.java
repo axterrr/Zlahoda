@@ -52,7 +52,6 @@ public class PostAddEmployeeCommand implements Command {
                 .setRole(Role.getRole(request.getParameter(Attribute.ROLE)))
                 .setSalary(request.getParameter(Attribute.SALARY))
                 .setDateOfBirth(request.getParameter(Attribute.DATE_OF_BIRTH))
-                .setDateOfStart(LocalDateTime.now().toString())
                 .setPhoneNumber(request.getParameter(Attribute.PHONE))
                 .setCity(request.getParameter(Attribute.CITY))
                 .setStreet(request.getParameter(Attribute.STREET))

@@ -49,9 +49,10 @@ public class CountTotalSoldProductPerPeriodCommand implements Command {
         Long res = 0L;
         res += checkService.getTotalProductAmountByDate(Long.valueOf(productId), LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
 
-        httpWrapper.getRequest().setAttribute(Attribute.TOTAL_AMOUNT, res);
+        httpWrapper.getRequest().setAttribute(Attribute.RESULT, res);
         httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEES, EmployeeService.getInstance().getAllEmployeesCashiers());
         httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, ProductService.getInstance().getAllProducts());
+        httpWrapper.getRequest().setAttribute(Attribute.CHECKS, CheckService.getInstance().getAllChecks());
 
         System.out.println(res);
         return Page.ALL_CHECKS_VIEW;

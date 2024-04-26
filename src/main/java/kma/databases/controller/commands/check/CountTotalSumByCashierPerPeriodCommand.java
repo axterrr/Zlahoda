@@ -47,17 +47,21 @@ public class CountTotalSumByCashierPerPeriodCommand implements Command {
         }
 
         BigDecimal sum = new BigDecimal(0);
+        BigDecimal result;
 
         if (cashierId == null || cashierId.isEmpty())
-            sum = sum.add(checkService.getTotalSumByDate(LocalDate.parse(from), LocalDate.parse(to).plusDays(1)));
+            result = checkService.getTotalSumByDate(LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
         else
-            sum = sum.add(checkService.getTotalSumByCashierAndDate(cashierId, LocalDate.parse(from), LocalDate.parse(to).plusDays(1)));
+            result = checkService.getTotalSumByCashierAndDate(cashierId, LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
 
-        httpWrapper.getRequest().setAttribute(Attribute.TOTAL_SUM, sum);
+        if(result!=null)
+            sum = sum.add(result);
+
+        httpWrapper.getRequest().setAttribute(Attribute.RESULT, sum);
         httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEES, EmployeeService.getInstance().getAllEmployeesCashiers());
         httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, ProductService.getInstance().getAllProducts());
+        httpWrapper.getRequest().setAttribute(Attribute.CHECKS, CheckService.getInstance().getAllChecks());
 
-        System.out.println(sum);
         return Page.ALL_CHECKS_VIEW;
     }
 
