@@ -25,6 +25,7 @@ public class FieldValidatorsChainGenerator {
         AbstractFieldValidatorHandler streetValidator = StreetValidator.getInstance();
         AbstractFieldValidatorHandler stringIdValidator = StringIdValidator.getInstance();
         AbstractFieldValidatorHandler zipCodeValidator = ZipCodeValidator.getInstance();
+        AbstractFieldValidatorHandler hashPass = HashPasswordValidator.getInstance();
 
         characteristicsValidator.setNextFieldValidator(cityValidator);
         cityValidator.setNextFieldValidator(currencyValidator);
@@ -45,6 +46,7 @@ public class FieldValidatorsChainGenerator {
         promotionalValidator.setNextFieldValidator(streetValidator);
         streetValidator.setNextFieldValidator(stringIdValidator);
         stringIdValidator.setNextFieldValidator(zipCodeValidator);
+        zipCodeValidator.setNextFieldValidator(hashPass);
 
         return characteristicsValidator;
 

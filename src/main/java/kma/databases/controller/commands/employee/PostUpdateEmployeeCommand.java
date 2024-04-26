@@ -11,9 +11,14 @@ import kma.databases.entities.Role;
 import kma.databases.services.EmployeeService;
 import kma.databases.validators.entities.EmployeeDtoValidator;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +38,14 @@ public class PostUpdateEmployeeCommand implements Command {
         List<String> errors = EmployeeDtoValidator.getInstance().validate(employeeDto);
 
         if (errors.isEmpty()) {
+            String password = employeeDto.getPassword();
+            byte[] salt = new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            int iterations = 10000;
+            int keyLength = 256;
+
+            String hashedPassword = hashPassword(password.toCharArray(), salt, iterations, keyLength);
+            employeeDto.setPassword(hashedPassword);
+
             employeeService.updateEmployee(employeeDto);
             redirectToAllEmployeesPageWithSuccessMessage(httpWrapper);
             return RedirectionManager.REDIRECTION;
@@ -69,5 +82,16 @@ public class PostUpdateEmployeeCommand implements Command {
     private void addRequestAttributes(HttpServletRequest request, EmployeeDto employeeDto, List<String> errors) {
         request.setAttribute(Attribute.EMPLOYEE_DTO, employeeDto);
         request.setAttribute(Attribute.ERRORS, errors);
+    }
+
+    private static String hashPassword(final char[] password, final byte[] salt, final int iterations, final int keyLength) {
+        try {
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
+            byte[] hash = skf.generateSecret(spec).getEncoded();
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException("Error while hashing a password", e);
+        }
     }
 }

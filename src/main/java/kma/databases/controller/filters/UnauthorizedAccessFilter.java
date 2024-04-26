@@ -1,4 +1,3 @@
-/*
 package kma.databases.controller.filters;
 
 import kma.databases.constants.Attribute;
@@ -29,7 +28,7 @@ public class UnauthorizedAccessFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-        if (httpRequest.getRequestURI().equals("/controller/login")) {
+        if (httpRequest.getRequestURI().equals("/controller/login") || httpRequest.getRequestURI().equals("/controller/")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -51,18 +50,28 @@ public class UnauthorizedAccessFilter implements Filter {
     public void destroy() {}
 
     private boolean isUserAuthorizedForResource(String servletPath, Employee user) {
-        return true;
-        //return (isManagerPage(servletPath) && user.getRole().equals(Role.MANAGER))
-        //        || (isCashierPage(servletPath) && user.getRole().equals(Role.CASHIER));
+        return (isManagerPage(servletPath) && user.getRole().equals(Role.MANAGER))
+                || (isCashierPage(servletPath) && user.getRole().equals(Role.CASHIER));
     }
 
     private boolean isManagerPage(String requestURI) {
-        return true;
+        return !requestURI.startsWith("/controller/checks/addCheck");
     }
 
     private boolean isCashierPage(String requestURI) {
-        return true;
+        return !requestURI.startsWith("/controller/categories")
+            && !requestURI.startsWith("/controller/checks/deleteCheck")
+            && !requestURI.startsWith("/controller/checks/sum")
+            && !requestURI.startsWith("/controller/checks/amount")
+            && !requestURI.startsWith("/controller/customerCards/deleteCustomerCard")
+            && !requestURI.startsWith("/controller/customerCards/percent")
+            && !requestURI.startsWith("/controller/employees/")
+            && !requestURI.startsWith("/controller/products/addProduct")
+            && !requestURI.startsWith("/controller/products/updateProduct")
+            && !requestURI.startsWith("/controller/products/deleteProduct")
+            && !requestURI.startsWith("/controller/storeProducts/addStoreProduct")
+            && !requestURI.startsWith("/controller/storeProducts/updateStoreProduct")
+            && !requestURI.startsWith("/controller/storeProducts/deleteStoreProduct");
     }
 
 }
-*/

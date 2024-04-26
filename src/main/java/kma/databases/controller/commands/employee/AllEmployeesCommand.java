@@ -30,17 +30,15 @@ public class AllEmployeesCommand implements Command {
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
 
         Employee loggedInUser = SessionManager.getInstance().getUserFromSession(httpWrapper.getRequest().getSession());
-        List<Employee> empls;
+        List<Employee> empls = new ArrayList<>();
 
-        empls = employeeService.getAllEmployees();
-
-        /*if (loggedInUser.getRole().equals(Role.MANAGER)) {
+        if (loggedInUser.getRole().equals(Role.MANAGER)) {
             empls = employeeService.getAllEmployees();
         } else if (loggedInUser.getRole().equals(Role.CASHIER)) {
             Optional<Employee> cashier = employeeService.getEmployeeById(loggedInUser.getId());
             if(cashier.isPresent())
                 empls.add(cashier.get());
-        }*/
+        }
 
         httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEES, empls);
         return Page.ALL_EMPLOYEES_VIEW;

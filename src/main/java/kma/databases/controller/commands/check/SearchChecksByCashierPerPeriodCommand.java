@@ -51,12 +51,7 @@ public class SearchChecksByCashierPerPeriodCommand implements Command {
 
         List<Check> checks = new ArrayList<>();
 
-        if(cashierId == null || cashierId.isEmpty())
-            checks = checkService.getChecksByDate(LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
-        else
-            checks = checkService.getChecksByCashierAndDate(cashierId, LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
-
-        /*Employee loggedInUser = SessionManager.getInstance().getUserFromSession(httpWrapper.getRequest().getSession());
+        Employee loggedInUser = SessionManager.getInstance().getUserFromSession(httpWrapper.getRequest().getSession());
         if (loggedInUser.getRole().equals(Role.MANAGER)) {
             if(cashierId == null || cashierId.isEmpty())
                 checks = checkService.getChecksByDate(LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
@@ -64,7 +59,7 @@ public class SearchChecksByCashierPerPeriodCommand implements Command {
                 checks = checkService.getChecksByCashierAndDate(cashierId, LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
         } else if (loggedInUser.getRole().equals(Role.CASHIER)) {
             checks = checkService.getChecksByCashierAndDate(loggedInUser.getId(), LocalDate.parse(from), LocalDate.parse(to).plusDays(1));
-        }*/
+        }
 
         if (checks.isEmpty()) {
             urlParams = new HashMap<>();

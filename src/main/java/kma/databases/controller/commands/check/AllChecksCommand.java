@@ -31,15 +31,13 @@ public class AllChecksCommand implements Command {
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
 
         Employee loggedInUser = SessionManager.getInstance().getUserFromSession(httpWrapper.getRequest().getSession());
-        List<Check> checks;
+        List<Check> checks = new ArrayList<>();
 
-        checks = checkService.getAllChecks();
-
-        /*if (loggedInUser.getRole().equals(Role.MANAGER)) {
+        if (loggedInUser.getRole().equals(Role.MANAGER)) {
             checks = checkService.getAllChecks();
         } else if (loggedInUser.getRole().equals(Role.CASHIER)) {
             checks = checkService.getChecksByCashierAndDate(loggedInUser.getId(), LocalDate.now(), LocalDate.now().plusDays(1));
-        }*/
+        }
 
         httpWrapper.getRequest().setAttribute(Attribute.CHECKS, checks);
         httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEES, EmployeeService.getInstance().getAllEmployeesCashiers());

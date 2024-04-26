@@ -24,7 +24,7 @@ public class CredentialsDtoValidator implements Validator<CredentialsDto> {
     public List<String> validate(CredentialsDto credentialsDto) {
         List<String> errors = new ArrayList<>();
         fieldValidator.validateField(FieldValidatorKey.PHONE, credentialsDto.getPhone(), errors);
-        fieldValidator.validateField(FieldValidatorKey.PASSWORD, credentialsDto.getPassword(), errors);
+        fieldValidator.validateField(FieldValidatorKey.HASH_PASSWORD, credentialsDto.getPassword(), errors);
         return errors;
     }
 }
