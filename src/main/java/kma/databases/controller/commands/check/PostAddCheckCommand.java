@@ -70,12 +70,12 @@ public class PostAddCheckCommand implements Command {
 
     private CheckDto getUserInput(HttpServletRequest request) {
 
-        String CustomerCardNumber = request.getParameter(Attribute.CUSTOMER_CARD);
+        String customerCardNumber = request.getParameter(Attribute.CUSTOMER_CARD);
         String[] storeProductsNumbers = request.getParameterValues(Attribute.STORE_PRODUCTS_ARRAY);
         String[] storeProductsAmounts = request.getParameterValues(Attribute.AMOUNT_ARRAY);
 
         CheckDto.Builder builder = new CheckDto.Builder()
-                .setCustomerCard(new CustomerCard.Builder().setNumber(CustomerCardNumber).build())
+                .setCustomerCard(new CustomerCard.Builder().setNumber(customerCardNumber).build())
                 .setEmployee(SessionManager.getInstance().getUserFromSession(request.getSession()))
                 .setPrintDate(LocalDateTime.now().toString());
 
@@ -87,6 +87,11 @@ public class PostAddCheckCommand implements Command {
             BigDecimal price = StoreProductService.getInstance()
                     .getStoreProductById(storeProductsNumbers[i]).get().getPrice();
 
+            if(customerCardNumber != null && !customerCardNumber.isEmpty()) {
+                double salePercent = CustomerCardService.getInstance().getCustomerCardById(customerCardNumber).get().getPercent()/100.0;
+                price = price.multiply(BigDecimal.valueOf(1.0-salePercent));
+            }
+
             saleList.add(new Sale.Builder()
                                 .setStoreProduct(new StoreProduct.Builder().setUPC(storeProductsNumbers[i]).build())
                                 .setProductsNumber(Long.valueOf(storeProductsAmounts[i]))
@@ -94,6 +99,7 @@ public class PostAddCheckCommand implements Command {
                                 .build());
 
             totalSum = totalSum.add(price.multiply(new BigDecimal(storeProductsAmounts[i])));
+
         }
 
         builder.setTotalSum(totalSum.toString())
