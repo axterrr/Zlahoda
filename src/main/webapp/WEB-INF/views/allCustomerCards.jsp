@@ -18,6 +18,7 @@
                     data-target="#searchBySurname">
                 Search by Surname
             </button>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
             <button type="button" class="btn btn-default" data-toggle="modal"
                     data-target="#searchByPercent">
                 Search by Percent
@@ -26,6 +27,7 @@
                     onclick="printTable()">
                 Report
             </button>
+</c:if>
         </div>
     </div>
     <script>
@@ -149,7 +151,9 @@
                 <th>Percent</th>
                 <th class="tdbutton"></th>
                 <th class="tdbutton"></th>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
                 <th class="tdbutton"></th>
+</c:if>
             </tr>
             </thead>
             <tbody>
@@ -197,7 +201,9 @@
                             </div>
                         </div>
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/customerCards/updateCustomerCard?id_customerCard=${customer.getNumber()}">Update</a></td>
+                    <c:if test="${employee.getRole().getValue() eq 'manager' }">
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/customerCards/deleteCustomerCard?id_customerCard=${customer.getNumber()}">Delete</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             <style>

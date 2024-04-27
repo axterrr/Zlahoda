@@ -9,6 +9,7 @@
     </div>
 
     <div class="row-fluid" align="left">
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
         <div class="btn-group" role="group" aria-label="buttons">
             <button type="button" class="btn btn-default"
                     onclick="location.href='${pageContext.request.contextPath}/controller/employees/addEmployee';">
@@ -26,6 +27,8 @@
                     onclick="printTable()">
                 Report
             </button>
+    </div>
+</c:if>
         </div>
     </div>
 
@@ -155,30 +158,32 @@
                 <th class="show-print">Street</th>
                 <th class="show-print">Zip Code</th>
                 <th class="tdbutton"></th>
+    <c:if test="${employee.getRole().getValue() eq 'manager' }">
                 <th class="tdbutton"></th>
                 <th class="tdbutton"></th>
+    </c:if>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${employees}" var="employee">
+            <c:forEach items="${employees}" var="empl">
                 <tr>
-                    <td>${employee.getId()}</td>
-                    <td>${employee.getSurname()}</td>
-                    <td>${employee.getName()}</td>
-                    <td class="show-print">${employee.getPatronymic()}</td>
-                    <td>${employee.getRole()}</td>
-                    <td class="show-print">${employee.getSalary()}</td>
-                    <td class="show-print">${employee.getDateOfBirthString()}</td>
-                    <td class="show-print">${employee.getDateOfStartString()}</td>
-                    <td>${employee.getPhoneNumber()}</td>
-                    <td>${employee.getCity()}</td>
-                    <td class="show-print">${employee.getStreet()}</td>
-                    <td class="show-print">${employee.getZipCode()}</td>
-                    <td class="tdbutton"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${employee.getId()}">
+                    <td>${empl.getId()}</td>
+                    <td>${empl.getSurname()}</td>
+                    <td>${empl.getName()}</td>
+                    <td class="show-print">${empl.getPatronymic()}</td>
+                    <td>${empl.getRole()}</td>
+                    <td class="show-print">${empl.getSalary()}</td>
+                    <td class="show-print">${empl.getDateOfBirthString()}</td>
+                    <td class="show-print">${empl.getDateOfStartString()}</td>
+                    <td>${empl.getPhoneNumber()}</td>
+                    <td>${empl.getCity()}</td>
+                    <td class="show-print">${empl.getStreet()}</td>
+                    <td class="show-print">${empl.getZipCode()}</td>
+                    <td class="tdbutton"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#fullInfoModal${empl.getId()}">
                         Full Info
                     </button>
                         <!-- modal filter -->
-                        <div class="modal fade tdbutton" id="fullInfoModal${employee.getId()}" tabindex="-1" role="dialog"
+                        <div class="modal fade tdbutton" id="fullInfoModal${empl.getId()}" tabindex="-1" role="dialog"
                              aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -188,28 +193,30 @@
                                             <span>&times;</span>
                                         </button>
                                         <h4 class="modal-title" id="myModalLabel">
-                                            Employee ${employee.getId()}
+                                            Employee ${empl.getId()}
                                         </h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="full-info">
-                                            <h4><b>Surname</b> :  ${employee.getSurname()}</h4>
-                                            <h4><b>Name</b> :  ${employee.getName()}</h4>
-                                            <h4><b>Patronymic</b> :  ${employee.getPatronymic()}</h4>
-                                            <h4><b>Role</b> :  ${employee.getRole()}</h4>
-                                            <h4><b>Salary</b> :  ${employee.getSalary()}</h4>
-                                            <h4><b>Date of Birth</b> :  ${employee.getDateOfBirthString()}</h4>
-                                            <h4><b>Date of Start</b> :  ${employee.getDateOfStartString()}</h4>
-                                            <h4><b>City</b> :  ${employee.getCity()}</h4>
-                                            <h4><b>Street</b> :  ${employee.getStreet()}</h4>
-                                            <h4><b>ZipCode</b> :  ${employee.getZipCode()}</h4>
+                                            <h4><b>Surname</b> :  ${empl.getSurname()}</h4>
+                                            <h4><b>Name</b> :  ${empl.getName()}</h4>
+                                            <h4><b>Patronymic</b> :  ${empl.getPatronymic()}</h4>
+                                            <h4><b>Role</b> :  ${empl.getRole()}</h4>
+                                            <h4><b>Salary</b> :  ${empl.getSalary()}</h4>
+                                            <h4><b>Date of Birth</b> :  ${empl.getDateOfBirthString()}</h4>
+                                            <h4><b>Date of Start</b> :  ${empl.getDateOfStartString()}</h4>
+                                            <h4><b>City</b> :  ${empl.getCity()}</h4>
+                                            <h4><b>Street</b> :  ${empl.getStreet()}</h4>
+                                            <h4><b>ZipCode</b> :  ${empl.getZipCode()}</h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/employees/updateEmployee?id_employee=${employee.getId()}">Update</a></td>
-                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/employees/deleteEmployee?id_employee=${employee.getId()}">Delete</a></td>
+                    <c:if test="${employee.getRole().getValue() eq 'manager' }">
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/employees/updateEmployee?id_employee=${empl.getId()}">Update</a></td>
+                    <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/employees/deleteEmployee?id_employee=${empl.getId()}">Delete</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             <style>

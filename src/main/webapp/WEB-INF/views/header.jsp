@@ -26,11 +26,11 @@
                        href="${pageContext.request.contextPath}/">Main</a>
                 </div>
                 <ul class="nav navbar-nav">
-<%--
-                    <c:if test="${not empty user}">
---%>
+                    <c:if test="${not empty employee}">
+                        <c:if test="${employee.getRole().getValue() eq 'manager' }">
                         <li><a
                                 href="${pageContext.request.contextPath}/controller/categories">Categories</a></li>
+                        </c:if>
                         <li><a
                                 href="${pageContext.request.contextPath}/controller/products">Products</a></li>
                         <li><a
@@ -41,10 +41,19 @@
                                 href="${pageContext.request.contextPath}/controller/employees">Employees</a></li>
                         <li><a
                                 href="${pageContext.request.contextPath}/controller/customerCards">Customers</a></li>
-<%--
                     </c:if>
---%>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                <c:if test="${not empty employee}">
+                    <c:choose>
+                        <c:when test="${employee.getRole().getValue() eq 'manager' }">
+                            <label>Logged in as Manager ${employee.getPhoneNumber()}</label>
+                        </c:when>
+                        <c:otherwise>
+                            <label>Logged in as Cashier ${employee.getPhoneNumber()}</label>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
                     <c:choose>
                         <c:when test="${empty employee}">
                             <li><a

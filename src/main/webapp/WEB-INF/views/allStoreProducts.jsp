@@ -10,10 +10,12 @@
 
     <div class="row-fluid" align="left">
         <div class="btn-group" role="group" aria-label="buttons">
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
             <button type="button" class="btn btn-default"
                     onclick="location.href='${pageContext.request.contextPath}/controller/storeProducts/addStoreProduct';">
                 Add Store Product
             </button>
+</c:if>
             <button type="button" class="btn btn-default" data-toggle="modal"
                     data-target="#searchByUPC">
                 Search by UPC
@@ -22,10 +24,12 @@
                     data-target="#filterPromotional">
                 Filter Promotional
             </button>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
             <button type="button" class="btn btn-default"
                     onclick="printTable()">
                 Report
             </button>
+</c:if>
         </div>
     </div>
 
@@ -150,9 +154,11 @@
                 <th>Selling price</th>
                 <th>Amount</th>
                 <th>Promotional</th>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
                 <th>Promotional UPC</th>
                 <th class="tdbutton"></th>
                 <th class="tdbutton"></th>
+</c:if>
             </tr>
             </thead>
             <tbody>
@@ -170,8 +176,10 @@
                         </c:choose>
                     </td>
                     <td>${storeProduct.getProm().getUpc()}</td>
+                    <c:if test="${employee.getRole().getValue() eq 'manager' }">
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/storeProducts/updateStoreProduct?id_storeProduct=${storeProduct.getUpc()}">Update</a></td>
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/storeProducts/deleteStoreProduct?id_storeProduct=${storeProduct.getUpc()}">Delete</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             <style>

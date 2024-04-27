@@ -10,10 +10,12 @@
 
     <div class="row-fluid" align="left">
         <div class="btn-group" role="group" aria-label="buttons">
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
             <button type="button" class="btn btn-default"
                     onclick="location.href='${pageContext.request.contextPath}/controller/products/addProduct';">
                 Add Product
             </button>
+</c:if>
             <button type="button" class="btn btn-default" data-toggle="modal"
                     data-target="#searchByCategory">
                 Search by Category
@@ -22,10 +24,12 @@
                     data-target="#searchByName">
                 Search by name
             </button>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
             <button type="button" class="btn btn-default"
                     onclick="printTable()">
                 Report
             </button>
+</c:if>
         </div>
     </div>
 
@@ -147,8 +151,10 @@
                 <th>Name</th>
                 <th>Characteristics</th>
                 <th>Category</th>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
                 <th class="tdbutton"></th>
                 <th class="tdbutton"></th>
+</c:if>
             </tr>
             </thead>
             <tbody>
@@ -158,8 +164,10 @@
                     <td>${product.getName()}</td>
                     <td>${product.getCharacteristics()}</td>
                     <td>${product.getCategory().getName()}</td>
+                    <c:if test="${employee.getRole().getValue() eq 'manager' }">
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/products/updateProduct?id_product=${product.getId()}">Update</a></td>
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/products/deleteProduct?id_product=${product.getId()}">Delete</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             <style>

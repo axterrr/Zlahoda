@@ -10,10 +10,12 @@
 
     <div class="row-fluid" align="left">
         <div class="btn-group" role="group" aria-label="buttons">
+<c:if test="${employee.getRole().getValue() eq 'cashier' }">
             <button type="button" class="btn btn-default"
                     onclick="location.href='${pageContext.request.contextPath}/controller/checks/addCheck';">
                 Add Check
             </button>
+</c:if>
             </button>
             <button type="button" class="btn btn-default" data-toggle="modal"
                     data-target="#searchByNumber">
@@ -23,6 +25,7 @@
                     data-target="#filter">
                 Search per Period
             </button>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
             <button type="button" class="btn btn-default" data-toggle="modal"
                     data-target="#totalSum">
                 Total Sum
@@ -35,6 +38,7 @@
                     onclick="printTable()">
                 Report
             </button>
+</c:if>
         </div>
     </div>
     <script>
@@ -111,13 +115,15 @@
                             action="${pageContext.request.contextPath}/controller/checks/search"
                             method="POST" role="form">
                         <div class="form-group">
+                            <c:if test="${employee.getRole().getValue() eq 'manager' }">
                             <label for="employee">Cashier</label>
                             <select class="form-control" id="employee" name="employee">
                                 <option value="">All Employees</option>
-                                <c:forEach items="${employees}" var="employee">
-                                    <option value="${employee.getId()}">${employee.getSurname()}</option>
+                                <c:forEach items="${employees}" var="empl">
+                                    <option value="${empl.getId()}">${empl.getSurname()}</option>
                                 </c:forEach>
                             </select>
+                            </c:if>
                             <label for="date-from">Date from</label>
                             <input type="date" class="form-control" id="date-from" name="dateFrom"/>
                             <label for="date-to">To</label>
@@ -251,7 +257,9 @@
                 <th>Total Sum</th>
                 <th>VAT</th>
                 <th class="tdbutton"></th>
+<c:if test="${employee.getRole().getValue() eq 'manager' }">
                 <th class="tdbutton"></th>
+</c:if>
             </tr>
             </thead>
             <tbody>
@@ -304,7 +312,9 @@
                             </div>
                         </div>
                     </td>
+                    <c:if test="${employee.getRole().getValue() eq 'manager' }">
                     <td class="tdbutton"><a href="${pageContext.request.contextPath}/controller/checks/deleteCheck?id_check=${check.getNumber()}">Delete</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             <style>
