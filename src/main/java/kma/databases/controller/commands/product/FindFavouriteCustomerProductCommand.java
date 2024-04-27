@@ -22,12 +22,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchProductByCategoryCommand implements Command {
+public class FindFavouriteCustomerProductCommand implements Command {
 
     private final ProductService productService;
     private final CategoryService categoryService;
 
-    public SearchProductByCategoryCommand(ProductService productService, CategoryService categoryService) {
+    public FindFavouriteCustomerProductCommand(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
         this.categoryService = categoryService;
     }
@@ -35,8 +35,8 @@ public class SearchProductByCategoryCommand implements Command {
     @Override
     public String execute(HttpWrapper httpWrapper) throws ServletException, IOException {
 
-        String categoryId = httpWrapper.getRequest().getParameter(Attribute.CATEGORY);
-        List<String> errors = validateUserInput(categoryId);
+        String cardId = httpWrapper.getRequest().getParameter(Attribute.CATEGORY);
+        List<String> errors = validateUserInput(cardId);
         Map<String, String> urlParams;
 
         if (!errors.isEmpty()) {
@@ -46,11 +46,7 @@ public class SearchProductByCategoryCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
-        List<Product> products;
-        if(categoryId.isEmpty())
-            products = productService.getAllProducts();
-         else
-             products = productService.searchProductByCategory(Long.parseLong(categoryId));
+        List<Product> products = productService.findCustomerFavouriteProducts(cardId);
 
         if (products.isEmpty()) {
             urlParams = new HashMap<>();
@@ -60,16 +56,16 @@ public class SearchProductByCategoryCommand implements Command {
         }
 
         List<Category> categories = categoryService.getAllCategories();
+        httpWrapper.getRequest().setAttribute(Attribute.CUSTOMER_CARDS, CustomerCardService.getInstance().getAllCustomerCards());
         httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, categories);
         httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, products);
-        httpWrapper.getRequest().setAttribute(Attribute.CUSTOMER_CARDS, CustomerCardService.getInstance().getAllCustomerCards());
         return Page.ALL_PRODUCTS_VIEW;
     }
 
     private List<String> validateUserInput(String id) {
         List<String> errors = new ArrayList<>();
         AbstractFieldValidatorHandler fieldValidator = FieldValidatorsChainGenerator.getFieldValidatorsChain();
-        fieldValidator.validateField(FieldValidatorKey.NUMERIC_ID, id, errors);
+        fieldValidator.validateField(FieldValidatorKey.STRING_ID, id, errors);
         return errors;
     }
 }

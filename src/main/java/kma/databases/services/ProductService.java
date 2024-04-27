@@ -68,4 +68,10 @@ public class ProductService {
             return productDao.getByName(name);
         }
     }
+
+    public List<Product> findCustomerFavouriteProducts(String cardId) {
+        try (ProductDao productDao = daoFactory.createProductDao()) {
+            return productDao.getCustomerFavourite(cardId);
+        }
+    }
 }

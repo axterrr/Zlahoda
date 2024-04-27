@@ -25,6 +25,10 @@
                 Search by name
             </button>
 <c:if test="${employee.getRole().getValue() eq 'manager' }">
+            <button type="button" class="btn btn-default" data-toggle="modal"
+                    data-target="#searchByCustomer">
+                Customer's Favorite
+            </button>
             <button type="button" class="btn btn-default"
                     onclick="printTable()">
                 Report
@@ -126,6 +130,46 @@
             </div>
         </div>
     </div>
+
+
+    <!-- modal searchByCustomer -->
+    <div class="modal fade" id="searchByCustomer" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Search favourite Products of Customer
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form
+                            action="${pageContext.request.contextPath}/controller/products/customerFavourite"
+                            method="POST" role="form">
+
+                        <div class="form-group">
+                            <label for="customer">Customer</label>
+                            <select class="form-control" id="customer" name="category">
+                                <c:forEach items="${customerCards}" var="cust">
+                                    <option value="${cust.getNumber()}">${cust.getSurname()}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-default" id="submitButton">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="row-fluid" align="center">
         <c:if test="${not empty param.success}">

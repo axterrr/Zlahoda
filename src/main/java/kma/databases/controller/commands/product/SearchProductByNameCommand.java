@@ -10,6 +10,7 @@ import kma.databases.entities.Category;
 import kma.databases.entities.Employee;
 import kma.databases.entities.Product;
 import kma.databases.services.CategoryService;
+import kma.databases.services.CustomerCardService;
 import kma.databases.services.EmployeeService;
 import kma.databases.services.ProductService;
 import kma.databases.validators.fields.AbstractFieldValidatorHandler;
@@ -58,6 +59,7 @@ public class SearchProductByNameCommand implements Command {
         List<Category> categories = categoryService.getAllCategories();
         httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, categories);
         httpWrapper.getRequest().setAttribute(Attribute.PRODUCTS, products);
+        httpWrapper.getRequest().setAttribute(Attribute.CUSTOMER_CARDS, CustomerCardService.getInstance().getAllCustomerCards());
         return Page.ALL_PRODUCTS_VIEW;
     }
 

@@ -61,6 +61,7 @@ enum CommandEnum {
     DELETE_PRODUCT ("GET:products/deleteProduct", new DeleteProductCommand(ProductService.getInstance())),
     SEARCH_PRODUCT_BY_CATEGORY ("POST:products/category", new SearchProductByCategoryCommand(ProductService.getInstance(), CategoryService.getInstance())),
     SEARCH_PRODUCT_BY_NAME ("POST:products/name", new SearchProductByNameCommand(ProductService.getInstance(), CategoryService.getInstance())),
+    SEARCH_CUSTOMER_FAVOURITE_PRODUCT ("POST:products/customerFavourite", new FindFavouriteCustomerProductCommand(ProductService.getInstance(), CategoryService.getInstance())),
 
     ALL_STORE_PRODUCTS ("GET:storeProducts", new AllStoreProductsCommand(StoreProductService.getInstance())),
     ALL_STORE_PRODUCTS_POST ("POST:storeProducts", new AllStoreProductsCommand(StoreProductService.getInstance())),

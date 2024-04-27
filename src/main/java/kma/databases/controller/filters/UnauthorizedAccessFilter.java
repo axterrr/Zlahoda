@@ -71,7 +71,8 @@ public class UnauthorizedAccessFilter implements Filter {
             && !requestURI.startsWith("/controller/products/deleteProduct")
             && !requestURI.startsWith("/controller/storeProducts/addStoreProduct")
             && !requestURI.startsWith("/controller/storeProducts/updateStoreProduct")
-            && !requestURI.startsWith("/controller/storeProducts/deleteStoreProduct");
+            && !requestURI.startsWith("/controller/storeProducts/deleteStoreProduct")
+            && !requestURI.startsWith("/controller/products/customerFavourite");
     }
 
 }

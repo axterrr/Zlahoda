@@ -24,6 +24,18 @@ public class JdbcProductDao implements ProductDao {
     private static String GET_BY_NAME = "SELECT * FROM `product` INNER JOIN `category` " +
             "ON product.category_number = category.category_number " +
             "WHERE LOWER(product_name) LIKE CONCAT('%', LOWER(?), '%') ORDER BY product_name";
+    private static String GET_MOST_POPULAR_FOR_CUSTOMER =
+            "SELECT id_product, product_name, characteristics, category_number, category_name " +
+            "FROM `product` " +
+            "JOIN `category` USING (category_number) " +
+            "JOIN `store_product` USING (id_product) " +
+            "JOIN `sale` USING (UPC) " +
+            "JOIN `check` USING (check_number) " +
+            "JOIN `customer_card` USING (card_number) " +
+            "WHERE card_number=? " +
+            "GROUP BY id_product, product_name, characteristics, category_number, category_name " +
+            "ORDER BY SUM(product_number) DESC " +
+            "LIMIT 1 ";
 
     private static String ID = "id_product";
     private static String CATEGORY_NUMBER = "category_number";
@@ -130,6 +142,21 @@ public class JdbcProductDao implements ProductDao {
         List<Product> products = new ArrayList<>();
         try (PreparedStatement query = connection.prepareStatement(GET_BY_NAME)) {
             query.setString(1, name);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                products.add(extractProductFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getCustomerFavourite(String customerCardNumber) {
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_MOST_POPULAR_FOR_CUSTOMER)) {
+            query.setString(1, customerCardNumber);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 products.add(extractProductFromResultSet(resultSet));
