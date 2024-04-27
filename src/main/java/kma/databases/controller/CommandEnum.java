@@ -34,6 +34,7 @@ enum CommandEnum {
     COUNT_TOTAL_SUM_BY_CASHIER_AND_DATE ("POST:checks/sum", new CountTotalSumByCashierPerPeriodCommand(CheckService.getInstance())),
     COUNT_TOTAL_SOLD_PRODUCT_AMOUNT_BY_DATE ("POST:checks/amount", new CountTotalSoldProductPerPeriodCommand(CheckService.getInstance())),
     SEARCH_CHECK_BY_NUMBER ("POST:checks/number", new SearchChecksByNumberCommand(CheckService.getInstance())),
+    SEARCH_PROMOTIONAL_CHECKS ("GET:checks/promotionalChecks", new FindPromotionalChecksCommand(CheckService.getInstance())),
 
     ALL_CUSTOMER_CARDS ("GET:customerCards", new AllCustomerCardsCommand(CustomerCardService.getInstance())),
     GET_ADD_CUSTOMER_CARD ("GET:customerCards/addCustomerCard", new GetAddCustomerCardCommand()),

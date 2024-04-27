@@ -100,6 +100,21 @@ public class JdbcCheckDao implements CheckDao {
             "JOIN `category` USING (category_number) " +
             "WHERE LOWER(check_number) LIKE CONCAT('%', LOWER(?), '%') " +
             "ORDER BY check_number";
+    private static String GET_PROM_CHECK =
+            "SELECT * " +
+            "FROM `check` " +
+            "JOIN `employee` USING (id_employee) " +
+            "LEFT JOIN `customer_card` USING (card_number) " +
+            "JOIN `sale` USING (check_number) " +
+            "JOIN `store_product` USING (UPC) " +
+            "JOIN `product` USING (id_product) " +
+            "JOIN `category` USING (category_number) " +
+            "WHERE check_number NOT IN (SELECT check_number " +
+                                       "FROM sale " +
+                                       "WHERE sale.UPC NOT IN (SELECT UPC " +
+                                                              "FROM store_product " +
+                                                              "WHERE promotional_product))" +
+            "ORDER BY check_number";
 
     private static String NUMBER = "check_number";
     private static String EMPLOYEE_ID = "id_employee";
@@ -292,6 +307,20 @@ public class JdbcCheckDao implements CheckDao {
                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             query.setString(1, checkNumber);
             ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return checks;
+    }
+
+    @Override
+    public List<Check> getPromotionalCheck() {
+        List<Check> checks = new ArrayList<>();
+        try (Statement query = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = query.executeQuery(GET_PROM_CHECK)) {
             while (resultSet.next()) {
                 checks.add(extractCheckWithSalesFromResultSet(resultSet));
             }

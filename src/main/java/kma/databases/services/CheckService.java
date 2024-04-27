@@ -100,4 +100,10 @@ public class CheckService {
             return checkDao.getByNumber(checkId);
         }
     }
+
+    public List<Check> getPromotionalChecks() {
+        try (CheckDao checkDao = daoFactory.createCheckDao()) {
+            return checkDao.getPromotionalCheck();
+        }
+    }
 }

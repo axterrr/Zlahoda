@@ -34,6 +34,10 @@
                     data-target="#totalAmount">
                 Total Amount
             </button>
+            <button type="button" class="btn btn-default" data-toggle="modal"
+                    onclick="location.href='${pageContext.request.contextPath}/controller/checks/promotionalChecks';">
+                Promotional Checks
+            </button>
             <button type="button" class="btn btn-default"
                     onclick="printTable()">
                 Report
