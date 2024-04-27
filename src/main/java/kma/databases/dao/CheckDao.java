@@ -15,5 +15,6 @@ public interface CheckDao extends GenericDao<Check, String>, AutoCloseable {
     Long getTotalProductAmountByDate(Long productId, LocalDate fromDate, LocalDate toDate);
     List<Check> getAllByCashier(String cashierId);
     List<Check> getByNumber(String checkNumber);
+    List<Check> getWithSameCategory(Long categoryId);
     void close();
 }

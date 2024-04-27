@@ -8,6 +8,7 @@ import kma.databases.controller.utils.SessionManager;
 import kma.databases.entities.CustomerCard;
 import kma.databases.entities.Employee;
 import kma.databases.entities.Role;
+import kma.databases.services.CategoryService;
 import kma.databases.services.CustomerCardService;
 import kma.databases.services.EmployeeService;
 
@@ -40,6 +41,7 @@ public class AllEmployeesCommand implements Command {
                 empls.add(cashier.get());
         }
 
+        httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, CategoryService.getInstance().getAllCategories());
         httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEES, empls);
         return Page.ALL_EMPLOYEES_VIEW;
     }

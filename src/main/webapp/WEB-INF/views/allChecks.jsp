@@ -34,6 +34,10 @@
                     data-target="#totalAmount">
                 Total Amount
             </button>
+    <button type="button" class="btn btn-default" data-toggle="modal"
+            data-target="#searchByCategory">
+        Search by Category
+    </button>
             <button type="button" class="btn btn-default"
                     onclick="printTable()">
                 Report
@@ -128,6 +132,44 @@
                             <input type="date" class="form-control" id="date-from" name="dateFrom"/>
                             <label for="date-to">To</label>
                             <input type="date" class="form-control" id="date-to" name="dateTo" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-default" id="submitButton">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal searchByCategory -->
+    <div class="modal fade" id="searchByCategory" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Search check that contains all products of Category
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form
+                            action="${pageContext.request.contextPath}/controller/checks/category"
+                            method="POST" role="form">
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select class="form-control" id="category" name="category">
+                                <c:forEach items="${categories}" var="cat">
+                                    <option value="${cat.getNumber()}">${cat.getName()}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-default" id="submitButton">

@@ -11,5 +11,6 @@ public interface EmployeeDao extends GenericDao<Employee, String>, AutoCloseable
     List<Employee> getAllCashiers();
     List<Employee> getAllManagers();
     List<Employee> getBySurname(String surname);
+    List<Employee> getBestCashier();
     void close();
 }

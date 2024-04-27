@@ -100,6 +100,21 @@ public class JdbcCheckDao implements CheckDao {
             "JOIN `category` USING (category_number) " +
             "WHERE LOWER(check_number) LIKE CONCAT('%', LOWER(?), '%') " +
             "ORDER BY check_number";
+    private static String GET_WITH_SAME_CATEGORY = "SELECT * " +
+                "FROM `check` " +
+                "JOIN `employee` USING (id_employee) " +
+                "LEFT JOIN `customer_card` USING (card_number) " +
+                "JOIN `sale` USING (check_number) " +
+                "JOIN `store_product` USING (UPC) " +
+                "JOIN `product` USING (id_product) " +
+                "JOIN `category` USING (category_number) " +
+                "WHERE check_number NOT IN (SELECT check_number " +
+            "                               FROM sale " +
+            "                               WHERE sale.UPC NOT IN (SELECT store_product.UPC " +
+            "                                                      FROM store_product " +
+            "                                                      WHERE product.id_product IN (SELECT product.id_product " +
+            "                                                                                   FROM product " +
+            "                                                                                   WHERE product.category_number=?)))";
 
     private static String NUMBER = "check_number";
     private static String EMPLOYEE_ID = "id_employee";
@@ -291,6 +306,22 @@ public class JdbcCheckDao implements CheckDao {
         try (PreparedStatement query = connection.prepareStatement(GET_BY_NUMBER,
                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             query.setString(1, checkNumber);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                checks.add(extractCheckWithSalesFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return checks;
+    }
+
+    @Override
+    public List<Check> getWithSameCategory(Long categoryId) {
+        List<Check> checks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_WITH_SAME_CATEGORY,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            query.setLong(1, categoryId);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 checks.add(extractCheckWithSalesFromResultSet(resultSet));

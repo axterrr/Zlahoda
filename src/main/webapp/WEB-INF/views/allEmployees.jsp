@@ -24,6 +24,10 @@
                 Search by Surname
             </button>
             <button type="button" class="btn btn-default"
+                    onclick="location.href='${pageContext.request.contextPath}/controller/employees/best';">
+                Best Employee
+            </button>
+            <button type="button" class="btn btn-default"
                     onclick="printTable()">
                 Report
             </button>

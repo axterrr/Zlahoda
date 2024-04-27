@@ -100,4 +100,10 @@ public class CheckService {
             return checkDao.getByNumber(checkId);
         }
     }
+
+    public List<Check> getChecksWithSameCategory(Long categoryId) {
+        try (CheckDao checkDao = daoFactory.createCheckDao()) {
+            return checkDao.getWithSameCategory(categoryId);
+        }
+    }
 }

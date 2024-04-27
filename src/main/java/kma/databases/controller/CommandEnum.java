@@ -34,6 +34,7 @@ enum CommandEnum {
     COUNT_TOTAL_SUM_BY_CASHIER_AND_DATE ("POST:checks/sum", new CountTotalSumByCashierPerPeriodCommand(CheckService.getInstance())),
     COUNT_TOTAL_SOLD_PRODUCT_AMOUNT_BY_DATE ("POST:checks/amount", new CountTotalSoldProductPerPeriodCommand(CheckService.getInstance())),
     SEARCH_CHECK_BY_NUMBER ("POST:checks/number", new SearchChecksByNumberCommand(CheckService.getInstance())),
+    SEARCH_CHECK_WITH_SAME_CATEGORIES ("POST:checks/category", new GetCheckWithSameCategoryCommand()),
 
     ALL_CUSTOMER_CARDS ("GET:customerCards", new AllCustomerCardsCommand(CustomerCardService.getInstance())),
     GET_ADD_CUSTOMER_CARD ("GET:customerCards/addCustomerCard", new GetAddCustomerCardCommand()),
@@ -52,6 +53,7 @@ enum CommandEnum {
     DELETE_EMPLOYEE ("GET:employees/deleteEmployee", new DeleteEmployeeCommand(EmployeeService.getInstance())),
     ALL_EMPLOYEES_BY_ROLE ("POST:employees/role", new AllEmployeesByRoleCommand(EmployeeService.getInstance())),
     SEARCH_EMPLOYEE_BY_SURNAME("POST:employees/surname", new SearchEmployeeBySurnameCommand(EmployeeService.getInstance())),
+    SEARCH_BEST_EMPLOYEE("GET:employees/best", new GetBestCashierCommand()),
 
     ALL_PRODUCTS ("GET:products", new AllProductsCommand(ProductService.getInstance(), CategoryService.getInstance())),
     GET_ADD_PRODUCT ("GET:products/addProduct", new GetAddProductCommand(CategoryService.getInstance())),

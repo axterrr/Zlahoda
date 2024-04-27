@@ -7,6 +7,7 @@ import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.controller.utils.RedirectionManager;
 import kma.databases.entities.Employee;
+import kma.databases.services.CategoryService;
 import kma.databases.services.EmployeeService;
 import kma.databases.validators.fields.AbstractFieldValidatorHandler;
 import kma.databases.validators.fields.FieldValidatorKey;
@@ -41,6 +42,7 @@ public class SearchEmployeeBySurnameCommand implements Command {
         }
 
         List<Employee> users = employeeService.searchEmployeeBySurname(surname);
+        httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, CategoryService.getInstance().getAllCategories());
 
         if (users.isEmpty()) {
             urlParams = new HashMap<>();

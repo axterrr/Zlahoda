@@ -81,4 +81,10 @@ public class EmployeeService {
             return employeeDao.getAllManagers();
         }
     }
+
+    public List<Employee> getBestCashier() {
+        try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
+            return employeeDao.getBestCashier();
+        }
+    }
 }

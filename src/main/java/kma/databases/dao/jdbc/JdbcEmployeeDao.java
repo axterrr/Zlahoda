@@ -25,6 +25,16 @@ public class JdbcEmployeeDao implements EmployeeDao {
     private static String GET_ALL_CASHIERS = "SELECT * FROM `employee` WHERE empl_role='cashier' ORDER BY empl_surname";
     private static String GET_ALL_MANAGERS = "SELECT * FROM `employee` WHERE empl_role='manager' ORDER BY empl_surname";
     private static String GET_BY_SURNAME = "SELECT * FROM `employee` WHERE LOWER(empl_surname) LIKE CONCAT('%', LOWER(?), '%')";
+    private static String GET_BEST_WORKER =
+            "SELECT id_employee, empl_surname, empl_name, empl_patronymic, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code, password " +
+            "FROM employee JOIN `check` USING (id_employee) " +
+            "JOIN `sale` USING (check_number) " +
+            "GROUP BY id_employee, empl_surname, empl_name, empl_patronymic, empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code, password " +
+            "HAVING SUM(product_number) >= (SELECT MAX(sum)" +
+                    "                       FROM (SELECT SUM(product_number) AS sum" +
+                    "                             FROM employee JOIN `check` USING (id_employee)" +
+                    "                             JOIN sale USING (check_number)" +
+                    "                             GROUP BY id_employee) as max) ";
 
     private static String ID = "id_employee";
     private static String SURNAME = "empl_surname";
@@ -189,6 +199,20 @@ public class JdbcEmployeeDao implements EmployeeDao {
             throw new ServerException(e);
         }
         return employees;
+    }
+
+    @Override
+    public List<Employee> getBestCashier() {
+        List<Employee> employee = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_BEST_WORKER)) {
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                employee.add(extractEmployeeFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return employee;
     }
 
     @Override

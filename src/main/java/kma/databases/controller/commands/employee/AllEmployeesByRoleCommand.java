@@ -5,6 +5,7 @@ import kma.databases.constants.Page;
 import kma.databases.controller.commands.Command;
 import kma.databases.controller.utils.HttpWrapper;
 import kma.databases.entities.Employee;
+import kma.databases.services.CategoryService;
 import kma.databases.services.EmployeeService;
 
 import javax.servlet.ServletException;
@@ -35,6 +36,7 @@ public class AllEmployeesByRoleCommand implements Command {
             employees = employeeService.getAllEmployeesManagers();
 
         httpWrapper.getRequest().setAttribute(Attribute.EMPLOYEES, employees);
+        httpWrapper.getRequest().setAttribute(Attribute.CATEGORIES, CategoryService.getInstance().getAllCategories());
         return Page.ALL_EMPLOYEES_VIEW;
     }
 }
