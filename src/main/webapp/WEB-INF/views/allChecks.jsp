@@ -267,7 +267,11 @@
                 <tr>
                     <td>${check.getNumber()}</td>
                     <td>${check.getEmployee().getId()}, ${check.getEmployee().getSurname()}</td>
-                    <td>${check.getCustomerCard().getNumber()}, ${check.getCustomerCard().getSurname()}</td>
+                    <td>
+                        <c:if test="${not empty check.getCustomerCard().getNumber()}">
+                            ${check.getCustomerCard().getNumber()}, ${check.getCustomerCard().getSurname()}
+                        </c:if>
+                    </td>
                     <td>${check.getPrintDate()}</td>
                     <td>${check.getTotalSum()}</td>
                     <td>${check.getVat()}</td>

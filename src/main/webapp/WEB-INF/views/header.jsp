@@ -47,23 +47,21 @@
                 <c:if test="${not empty employee}">
                     <c:choose>
                         <c:when test="${employee.getRole().getValue() eq 'manager' }">
-                            <label>Logged in as Manager ${employee.getPhoneNumber()}</label>
+                            <li><p class="navbar-text">Logged in as Manager ${employee.getPhoneNumber()}</p></li>
                         </c:when>
                         <c:otherwise>
-                            <label>Logged in as Cashier ${employee.getPhoneNumber()}</label>
+                            <li><p class="navbar-text">Logged in as Cashier ${employee.getPhoneNumber()}</p></li>
                         </c:otherwise>
                     </c:choose>
                 </c:if>
                     <c:choose>
                         <c:when test="${empty employee}">
                             <li><a
-                                    href="${pageContext.request.contextPath}/controller/login"><span
-                                    class="glyphicon glyphicon-log-out"></span>Login</a></li>
+                                    href="${pageContext.request.contextPath}/controller/login">Login</a></li>
                         </c:when>
                         <c:otherwise>
                             <li><a
-                                    href="${pageContext.request.contextPath}/controller/logout"><span
-                                    class="glyphicon glyphicon-log-in"></span>Logout</a></li>
+                                    href="${pageContext.request.contextPath}/controller/logout">Logout</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

@@ -56,49 +56,71 @@
     </div>
 </div>
 <script>
-    function addSaleModule(productName) {
-        let saleModule = document.getElementById(productName);
+    function addSaleModule(productId, productName) {
+        let saleModule = document.getElementById(productId);
         if(saleModule)
         {
-            let amount = document.getElementById(productName + 'amount');
+            let amount = document.getElementById(productId + 'amount');
             amount.value = parseInt(amount.value) + 1;
         }
         else {
             let saleModule = document.createElement('div');
             saleModule.className = 'sale';
-            saleModule.id = productName;
+            saleModule.id = productId;
             saleModule.style.width = '100%';
+            saleModule.style.height = 'fit-content';
             saleModule.style.display = 'flex';
-            saleModule.style.alignItems = 'stretch';
+            saleModule.style.justifyContent = 'space-between';
+            saleModule.style.alignItems = 'center';
+            saleModule.style.border = 'solid 1px black';
+            saleModule.style.paddingLeft = '25px';
+            saleModule.style.paddingRight = '25px';
+            saleModule.style.paddingTop = '10px';
+            saleModule.style.paddingBottom = '10px';
 
-            let productNameElement = document.createElement('label');
+            let productNameElement = document.createElement('p');
             productNameElement.textContent = productName;
+            productNameElement.style.width = '200px';
+            productNameElement.style.height = 'fit-content';
+            productNameElement.style.margin = '0px';
+            productNameElement.style.fontSize = '15px';
             saleModule.appendChild(productNameElement);
 
             let idStoreProduct = document.createElement('input');
             idStoreProduct.type = 'hidden';
             idStoreProduct.name = 'storeProducts[]';
-            idStoreProduct.value = productName;
+            idStoreProduct.value = productId;
             saleModule.appendChild(idStoreProduct);
 
             let amountInput = document.createElement('input');
             amountInput.type = 'number';
-            amountInput.id = productName + 'amount';
+            amountInput.classList.add('btn');
+            amountInput.id = productId + 'amount';
             amountInput.value = '1';
             amountInput.name = 'amount[]';
+            amountInput.style.width = '75px'
+            amountInput.style.height = '40px'
             saleModule.appendChild(amountInput);
 
             let incrementButton = document.createElement('button');
+            incrementButton.classList.add('btn');
             incrementButton.type = 'button';
             incrementButton.textContent = '+';
+            incrementButton.style.width = '40px';
+            incrementButton.style.height = '40px';
+            incrementButton.style.border = 'none';
             incrementButton.onclick = function () {
                 amountInput.value = parseInt(amountInput.value) + 1;
             };
             saleModule.appendChild(incrementButton);
 
             let decrementButton = document.createElement('button');
+            decrementButton.classList.add('btn');
             decrementButton.type = 'button';
             decrementButton.textContent = '-';
+            decrementButton.style.width = '40px';
+            decrementButton.style.height = '40px';
+            decrementButton.style.border = 'none';
             decrementButton.onclick = function () {
                 if (parseInt(amountInput.value) > 1) {
                     amountInput.value = parseInt(amountInput.value) - 1;
@@ -111,8 +133,11 @@
             saleModule.appendChild(decrementButton);
 
             let deleteButton = document.createElement('button');
+            deleteButton.classList.add('btn');
             deleteButton.type = 'button';
             deleteButton.textContent = 'Delete';
+            deleteButton.style.height = '40px';
+            deleteButton.style.border = 'none';
             deleteButton.onclick = function () {
                 saleModule.remove();
             };
@@ -123,8 +148,9 @@
     }
 
     document.getElementById('product').addEventListener('change', function() {
-        let productName = this.options[this.selectedIndex].value;
-        addSaleModule(productName);
+        let productId = this.options[this.selectedIndex].value;
+        let productName = this.options[this.selectedIndex].textContent;
+        addSaleModule(productId, productName);
     });
 </script>
 
